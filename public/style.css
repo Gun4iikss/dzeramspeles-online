@@ -1,0 +1,35 @@
+/* File: public/style.css */
+:root{--font-primary:'Montserrat',sans-serif;--font-secondary:'Roboto',sans-serif;--color-dark:#121212;--color-mid:#1E1E1E;--color-light:#2d2d2d;--color-text:#EAEAEA;--color-primary:#BB86FC;--color-secondary:#03DAC6;--color-success:#4CAF50;--color-danger:#F44336;--color-warning:#ff9800}
+body{font-family:var(--font-secondary);display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;color:var(--color-text);transition:background .7s ease}
+.container{background-color:rgba(30,30,30,.8);padding:30px 40px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.5);backdrop-filter:blur(10px);text-align:center;width:90%;max-width:550px;border:1px solid rgba(255,255,255,.1)}
+h1{font-family:var(--font-primary);font-weight:700;font-size:2.5em;color:#fff}
+.subtitle{margin-top:-15px;margin-bottom:30px;color:#bdc3c7}
+input{width:100%;padding:12px;margin:8px 0;box-sizing:border-box;border-radius:5px;border:1px solid #555;background-color:#333;color:#f1f1f1;font-size:1em}
+button{font-family:var(--font-primary);font-weight:700;padding:12px 20px;border:none;border-radius:5px;cursor:pointer;transition:all .3s ease;text-transform:uppercase}
+.game-header h2{margin-bottom:10px}
+#playerList{list-style:none;padding:0;text-align:center;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+#playerList li{background-color:#34495e;padding:5px 12px;border-radius:20px;font-size:.9em}
+.chaos-btn{background:linear-gradient(45deg,#f0932b,#d63031);color:#fff;padding:20px;font-size:1.5em;width:100%}
+.btn-next-question{width:100%;margin-top:25px;padding:15px;background:var(--color-secondary);color:#000;font-size:1.1em}
+.card{background:#fff;color:#000;border-radius:15px;padding:30px;min-height:150px;display:flex;flex-direction:column;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.game-title{font-family:var(--font-primary);font-size:1.5em;font-weight:700;color:var(--color-secondary);margin-bottom:20px}
+.question-prefix{font-size:1em;font-weight:500;opacity:.7;margin:0}
+.question-main{font-family:var(--font-primary);font-size:1.8em;font-weight:700;margin-top:10px}
+#turnIndicator{background:rgba(0,0,0,.3);padding:8px;border-radius:5px;margin-top:15px;font-weight:700}
+#activePlayerName{color:var(--color-warning);font-style:italic}
+body.theme-default{background:linear-gradient(45deg,#2c3e50,#34495e)}
+body.theme-never{background:linear-gradient(45deg,#8E2DE2,#4A00E0)}
+body.theme-latvia{background:linear-gradient(45deg,#A20000,#610000)}
+body.theme-task{background:linear-gradient(45deg,#f0932b,#d63031)}
+body.theme-spelling{background:linear-gradient(45deg,#004e92,#000428)}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.option-btn{background-color:var(--color-light);color:var(--color-text);padding:15px}
+.option-btn:disabled{opacity:.6;cursor:not-allowed}
+.option-btn.correct{background-color:var(--color-success)!important;color:#fff;transform:scale(1.05)}
+.option-btn.incorrect{background-color:var(--color-danger)!important;color:#fff}
+#sayWordBtn{background:var(--color-primary);color:#000;margin:10px 0}
+#submitSpellingBtn{background:var(--color-success);color:#fff;margin-top:10px}
+#submitSpellingBtn:disabled{background:#555;cursor:not-allowed}
+.result-message{margin-top:10px;font-size:1.2em;font-weight:700}
+.result-message.correct{color:var(--color-success)}
+.result-message.incorrect{color:var(--color-danger)}

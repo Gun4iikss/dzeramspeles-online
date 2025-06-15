@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <title>Haosa Spēles</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="app-body">
+    <div id="lobby" class="container">
+        <h1>Haosa Spēles</h1>
+        <p class="subtitle">Izveido istabu vai pievienojies draugiem</p>
+        <input type="text" id="playerNameInput" placeholder="Ieraksti savu vārdu" autocomplete="off">
+        <input type="text" id="roomCodeInput" placeholder="Ieraksti istabas kodu" autocomplete="off">
+        <button id="joinRoomBtn">Pievienoties</button>
+        <button id="createRoomBtn">Izveidot Jaunu Istabu</button>
+    </div>
+
+    <div id="gameArea" class="container" style="display:none;">
+        <div class="game-header">
+            <h2 id="roomTitle"></h2>
+            <ul id="playerList"></ul>
+        </div>
+        <div id="turnIndicator" style="display: none;">Aktīvais spēlētājs: <span id="activePlayerName"></span></div>
+        <hr>
+        <div id="gameContainer">
+            <div id="gameSelection">
+                <h3>Viss ir sajaukts vienā lielā haosā!</h3>
+                <button id="startChaosBtn" class="game-choice-btn chaos-btn">SĀKT SPĒLI</button>
+            </div>
+            <div id="gameBoards" style="display: none;">
+                <div id="neverGame" class="game-board">
+                    <div class="game-title">Never Have I Ever</div>
+                    <div class="card"><p class="question-prefix">Never have I ever...</p><p id="neverQuestionText" class="question-main"></p></div>
+                </div>
+                <div id="latviaGame" class="game-board">
+                    <div class="game-title">Latvijas Erudīts</div>
+                    <div class="card"><p id="latviaQuestionText" class="question-main"></p></div>
+                    <div id="latviaOptions" class="options-grid"></div>
+                </div>
+                <div id="taskGame" class="game-board">
+    <div class="game-title">Izaicinājums vai Uzdevums</div>
+    <div class="card"><p id="taskText" class="question-main"></p></div>
+</div>
+                <div id="spellingGame" class="game-board">
+                    <div class="game-title">Spelling Bee</div>
+                    <div class="card">
+                        <p class="question-prefix">Izburto vārdu:</p>
+                        <button id="sayWordBtn"><i class="fas fa-volume-up"></i> Noklausīties vārdu</button>
+                        <div id="spellingResult" class="result-message"></div>
+                        <input type="text" id="spellingInput" placeholder="Ieraksti vārdu šeit...">
+                        <button id="submitSpellingBtn">Iesniegt</button>
+                    </div>
+                </div>
+                <button id="nextTurnBtn" class="btn-next-question" style="display: none;">NĀKAMAIS</button>
+            </div>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>
+</html>
