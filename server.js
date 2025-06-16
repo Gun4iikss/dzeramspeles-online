@@ -1,5 +1,4 @@
-// File: server.js
-
+// File: server.js (FINAL, FULLY WORKING VERSION WITH ALL LOGIC)
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -8,911 +7,143 @@ const server = http.createServer(app);
 const io = socketIo(server);
 const PORT = 3000;
 
-
-
-const neverHaveIEverQuestions = [
-    // 1. sadaļa: Ikdiena un Joki
-    "smējies tik stipri, ka sāku šņukstēt publiski.",
-    "paklupis pret savām kājām.",
-    "mēģinājis stumt durvis, uz kurām skaidri rakstīts 'VILKT'.",
-    "atmājis kādam, kurš patiesībā nemāja man.",
-    "aizmirsis, kāpēc iegāju istabā.",
-    "iegūglējis pats savu vārdu.",
-    "praktizējis sarunu spoguļa priekšā.",
-    "izlicies, ka runāju pa telefonu, lai no kāda izvairītos.",
-    "nēsājis zeķes ar sandalēm (bez ironijas).",
-    "strīdējies ar svešinieku internetā.",
-    "noveļis vainu par gāzēm uz mājdzīvnieku vai citu cilvēku.",
-    "pakritis, kāpjot augšā pa kāpnēm.",
-    "apēdis ēdienu, kas nokritis uz grīdas, atsaucoties uz '5 sekunžu likumu'.",
-    "mēģinot gatavot, gandrīz izraisījis ugunsgrēku.",
-    "aizmirsis tuva drauga dzimšanas dienu.",
-    "aizsūtījis īsziņu nepareizajam cilvēkam.",
-    "stalkojis bijušā partnera jauno otro pusīti sociālajos tīklos.",
-    "izlicies slims, lai nebūtu jāiet uz darbu/skolu.",
-    "dejojis liftā, kad biju viens.",
-    "dziedājis karaoke pilnīgi šķībi.",
-    "nēsājis vienu un to pašu apģērbu divas dienas pēc kārtas.",
-    "mēģinājis pats sev apgriezt matus un nožēlojis to.",
-    "melojis par savu vecumu.",
-    "izmantojis bērnišķīgu aizbildinājumu, būdams pieaugušais.",
-    "raudājis Disneja multfilmas laikā.",
-    "imitējis telefona zvanu, lai izskatītos aizņemts.",
-    "izlicies, ka saprotu, par ko kāds runā, lai gan nesapratu.",
-    "melojis, ka esmu redzējis kādu slavenu filmu, piemēram, 'Krusttēvu'.",
-    "galvā iesēdusies dziesma, kas skanējusi vairāk nekā dienu.",
-    "meklējis savu telefonu, turot to rokā.",
-    "nēsājis drēbes uz kreiso pusi, to neapzinoties.",
-    "skaļi atbildējis uz retorisku jautājumu.",
-    "aplaudējis, kad lidmašīna nolaidās.",
-    "vedis pilnvērtīgu sarunu ar mājdzīvnieku.",
-    "ēdis maltīti gultā.",
-    "paostījis savas drēbes, lai pārbaudītu, vai tās ir pietiekami tīras.",
-    "izlicies, ka esmu mūzikas video, klausoties mūziku austiņās.",
-    "cietis neveiksmi 'dari pats' projektā no Pinterest.",
-    "izmantojis izdomātu vārdu, veicot rezervāciju.",
-    "slēpis našķus, lai nebūtu jādalās.",
-    "nokavējis svarīgu pasākumu, jo pazaudēju laika izjūtu.",
-    "pastāstījis joku, par kuru neviens nesmējās.",
-    "zaudējis derībās un darījis kaut ko apkaunojošu.",
-    "raudājis par izdomāta tēla nāvi.",
-    "nodomājis, ka manekens veikalā ir īsts cilvēks.",
-    "aizmidzis sabiedriskā vietā, piemēram, autobusā.",
-    "melojis vecākiem par to, kurp dodos, kad biju pusaudzis.",
-    "izlasījis grāmatas pēdējo lapaspusi pirms sākuma.",
-    "ignorējis degošu 'check engine' lampiņu mašīnā ilgāk par nedēļu.",
-    "salicis mēbeles, neizlasot instrukciju.",
-    "izmantojis 'zvanu draugam' ļoti vienkāršam jautājumam.",
-    "atstājis atsauksmi internetā.",
-    "raudājis sentimentālas reklāmas laikā.",
-    "lietojis sabiedrisko tualeti un sapratis, ka nav tualetes papīra, kad jau par vēlu.",
-    "saņēmis nosodošu 'mammas skatienu', būdams pieaugušais.",
-    "nejauši nospiedis 'patīk' uz ļoti vecas bildes kāda sociālajos tīklos.",
-    "pildījis testu 'kurš personāžs tu esi?'.",
-    "apēdis veselu čipsu paku vienā piegājienā.",
-    "gadiem ilgi izrunājis kādu vārdu nepareizi.",
-    "bijis tik noguris, ka sācis redzēt halucinācijas.",
-    "izlicies aizmigušu, lai izvairītos no sarunas.",
-    "pazaudējis atslēgas vai maku.",
-    "staigājis ar vaļēju bikšu priekšu, to nezinot.",
-    "nosaucis skolotāju par 'mammu' vai 'tēti'.",
-    "gūglējis vienkāršus matemātikas aprēķinus.",
-    "mēģinājis izmantot kuponu, kam beidzies derīguma termiņš.",
-    "runājis pats ar sevi publiskā vietā.",
-    "mēģinājis strīdu dušā.",
-    "noveļis vainu par savu kļūdu uz tehnoloģijām.",
-    "apēdis veselu burku marinētu gurķu vai olīvu.",
-    "izmantojis banālu iepazīšanās frāzi.",
-    "aizgājis no kino, jo filma bija ļoti slikta.",
-    "bijis līdz nāvei pārbijies no maza kukaiņa.",
-    "nēsājis saulesbrilles telpās, lai izskatītos stilīgi.",
-    "aizmirsis izslēgt mikrofonu video zvanā.",
-    "uzlējis dzērienu uz sava datora.",
-    "redzējis murgu par darbu vai skolu.",
-    "izlicies par tūristu savā pilsētā.",
-    "kliedzis uz nedzīvu priekšmetu.",
-    "iekāpis nepareizajā mašīnā.",
-    "man bijusi iesauka, ko ienīdu.",
-    "melojis par saviem hobijiem, lai izklausītos interesantāks.",
-    "noturējis istabas augu dzīvu ilgāk par gadu.",
-    "raudājis aiz laimes.",
-    "bijis pirmais, kurš sācis dejot ballītē.",
-    "apņēmies kaut ko Jaunajā gadā un salauzis apņemšanos jau pirmajā dienā.",
-    "pasūtījis kaut ko internetā, būdams piedzēries.",
-    "rakstījis dienasgrāmatu.",
-    "ziedojis naudu kādam mērķim, kas man rūp.",
-    "brīvprātīgi strādājis.",
-    "uzcēlis spilvenu cietoksni, būdams pieaugušais.",
-    "mēģinājis iemācīties burvju triku.",
-    "apēdis puķi.",
-    "krāsojis bērnu krāsojamo grāmatu.",
-    "nosūtījis vēstuli pa pastu.",
-    "staigājis pidžamā ārpus mājas.",
-    "mēģinājis runāt ar zīdaini 'bēbīšu valodā'.",
-    "piešķīris vārdu nedzīvam priekšmetam.",
-    "raudājis kāzās.",
-    "man bijis iedomu draugs.",
-    "ticējis Ziemassvētku vecītim daudz ilgāk, nekā vajadzēja.",
-    "mēģinājis salikt Rubika kubu.",
-    "spēlējis paslēpes, būdams pieaugušais.",
-    "ielēcis lapu kaudzē.",
-    "uztaisījis sniega eņģeli.",
-    "skatījies multfilmas sestdienas rītā.",
-    "ēdis konfektes brokastīs.",
-    "pārdevis limonādi uz ielas.",
-    "kolekcionējis kaut ko, piemēram, pastmarkas vai monētas.",
-    "mēģinājis izmantot 'spēku', lai pārvietotu priekšmetu.",
-    "pie sienas bijis slavenības plakāts.",
-    "uzrakstījis vēstuli fanu klubam.",
-    "mēģinājis aizsākt jaunu modes tendenci.",
-    "zaudējis galda spēlē un apgāzis galdu.",
-    "slepus skatījies savas Ziemassvētku dāvanas.",
-    "izmantojis sinonīmu vārdnīcu, lai izklausītos gudrāks.",
-    "man bijusi sava 'firmas' frāze.",
-    "izveidojis slepenu rokas spiedienu.",
-    "izlicies, ka grīda ir lava.",
-    "piedalījies ūdens balonu cīņā.",
-    "palicis nomodā visu nakti, runājot ar kādu.",
-    "mēģinājis saskatīt 3D attēlu stereogrammā.",
-    "piezvanījis kādam un izjokojis.",
-    "lietojis vienreizlietojamo fotoaparātu.",
-    "ierakstījis dziesmu no radio kasetē.",
-
-    // 2. sadaļa: Ēdieni un Dzērieni
-    "apēdis veselu picu vienā piegājienā.",
-    "ēdis desertu pirms pamatēdiena.",
-    "dzēris pienu tieši no pakas.",
-    "mēģinājis ievērot diētu un izgāzies 24 stundu laikā.",
-    "aizsūtījis ēdienu atpakaļ restorānā.",
-    "apēdis kukaini ar nolūku.",
-    "piedzīvojis paģiras, kas ilga divas dienas.",
-    "sajaucis kopā vairāk nekā trīs dažādas limonādes.",
-    "licis kečupu uz steika.",
-    "pasūtījis bērnu porciju, būdams pieaugušais.",
-    "ēdis jēlu cepumu mīklu, apzinoties riskus.",
-    "izlaizījis šķīvi restorānā.",
-    "mēģinājis un cietis neveiksmi, kļūstot par veģetārieti vai vegānu.",
-    "apēdis kaut ko, pret ko man ir alerģija, un cietis no sekām.",
-    "piededzinājis popkornu tik traki, ka nostrādāja dūmu detektors.",
-    "kāds man uzlējis dzērienu dusmās.",
-    "uzlējis kādam dzērienu dusmās.",
-    "izlicies par vīna vai alus pazinēju.",
-    "apēdis ēdiena dekorāciju.",
-    "pasūtījis ēdienu restorānā tikai Instagram bildes dēļ.",
-    "ēdis kūku brokastīs bez īpaša iemesla.",
-    "nosodījis kādu par ananasu likšanu uz picas.",
-    "ēdis ēdienu, kam beidzies derīguma termiņš.",
-    "piedalījies ēšanas sacensībās.",
-    "raudājis, jo biju 'nikns no bada' (hangry).",
-    "izmantojis dakšiņu, lai ēstu suši.",
-    "izdzēris veselu vīna pudeli vienā vakarā.",
-    "izlicies, ka man garšo ēdiens, lai būtu pieklājīgs.",
-    "apēdis ģimenes izmēra čipsu paku.",
-    "dzēris kafiju pēc sešiem vakarā un nožēlojis to visu nakti.",
-    "mēģinājis pagatavot smalku kokteili un izgāzies.",
-    "apēdis tik asu piparu, ka raudāju.",
-    "atradis matu savā ēdienā un turpinājis ēst.",
-    "ēdis degvielas uzpildes stacijā.",
-    "izmantojis nazi un dakšiņu, lai ēstu burgeru.",
-    "pagatavojis 'skumjo maltīti' no nejaušiem produktiem ledusskapī.",
-    "ēdis brokastu pārslas vakariņās.",
-    "izmēģinājis kādu TikTok ēdiena trendu.",
-    "apēdis veselu ķiploka galviņu veselības nolūkos.",
-    "atteicies dalīties ar savu ēdienu.",
-    "ēdis fritētu šokolādes batoniņu.",
-    "bārmenis man atteicies liet vairāk.",
-    "cepis maizi no nulles.",
-    "redzējis sapni par ēdienu.",
-    "strīdējies ar kādu par to, kā pareizi gatavot kādu ēdienu.",
-    "ēdis vakariņu pārpalikumus aukstus no ledusskapja.",
-    "dzēris dzērienu, nezinot, kas tas ir.",
-    "ēdis patiešām dīvainu ēdienu kombināciju.",
-    "aizgājis no ballītes agrāk, lai paēstu.",
-    "ēdis kaut ko tikai tāpēc, ka tas bija par brīvu.",
-    "iemērcis čipsi mērcē divreiz.",
-    "mēģinājis apmest pankūku un cietis neveiksmi.",
-    "apēdis veselu Nutellas burku ar karoti.",
-    "dzēris apelsīnu sulu uzreiz pēc zobu tīrīšanas.",
-    "sajaucis sāli ar cukuru.",
-    "man bijis slepens saldumu krājums.",
-    "ēdis 'gardēžu' maltīti, kas patiesībā bija ātri pagatavojamās nūdeles.",
-    "uzlējis dzērienu kādam citam.",
-    "mēģinājis gatavot pēc receptes, un sanācis kaut kas pavisam cits.",
-    "apēdis veselu brokastu pārslu kasti divās dienās.",
-    "vērtējis restorānu pēc tā nosaukuma.",
-    "paņēmis ēdienu no koplietošanas ledusskapja, kas nebija mans.",
-    "mēģinājis atvērt pudeli ar zobiem.",
-    "ēdis kaut ko, kas vēl bija sasalis.",
-    "raudājis, jo restorāns sajauca manu pasūtījumu.",
-    "pasūtījis dārgāko lietu ēdienkartē.",
-    "pasūtījis lētāko lietu ēdienkartē.",
-    "izlicies, ka man ir alerģija, lai neēstu kādu ēdienu.",
-
-    // 3. sadaļa: Drosme, Riski un Ceļojumi
-    "uztaisījis tetovējumu mirkļa iegribā.",
-    "izdūris pīrsingu vietā, kas nav auss ļipiņa.",
-    "melojis policistam, lai izvairītos no soda.",
-    "iekūlies kautiņā, būdams pieaugušais.",
-    "ielavījies kino, lai redzētu otru filmu bez maksas.",
-    "paēdis restorānā un aizbēdzis nesamaksājis.",
-    "ielauzies ballītē vai kāzās.",
-    "ticis arestēts.",
-    "iztērējis vairāk nekā 1000 eiro par vienu lietu, kas nebija pirmās nepieciešamības prece.",
-    "saņēmis sodu par ātruma pārsniegšanu par 30+ km/h.",
-    "izmantojis viltotu ID.",
-    "salauzis kaulu.",
-    "ticis izmests no bāra vai kluba.",
-    "nošpikojis svarīgā eksāmenā.",
-    "uzkāpis uz ēkas jumta.",
-    "ziedojs asinis vai plazmu.",
-    "nokrāsojis matus pilnīgi nedabiskā krāsā.",
-    "piedalījies zibakcijā (flash mob).",
-    "laimējis vairāk nekā 100 eiro azartspēlēs.",
-    "saticis slavenību un izlicies 'vēss'.",
-    "ticis nohipnotizēts.",
-    "piedzīvojis kaut ko, kas, manuprāt, bija paranormāla parādība.",
-    "piedalījies politiskā protestā.",
-    "palicis nomodā visu nakti tikai prieka pēc.",
-    "bijis redzams TV vai dzirdams radio.",
-    "melojis 'Es nekad nebiju' spēles laikā.",
-    "nozadzis kaut ko no veikala, pat ja tas bija sīkums.",
-    "vadījis auto bez autovadītāja apliecības.",
-    "lēcis no klints vai tilta ūdenī.",
-    "aizceļojis uz citu kontinentu.",
-    "nokavējis lidojumu.",
-    "gulējis lidostā vai dzelzceļa stacijā.",
-    "niris ar akvalangu.",
-    "braucis ar motociklu.",
-    "devies 'mežonīgā' kempingā.",
-    "bijis autoceļojumā, kas šķērsoja valstu robežas.",
-    "redzējis vienu no 7 pasaules brīnumiem.",
-    "braucis ar stopiem.",
-    "bijis lielā mūzikas festivālā.",
-    "bezcerīgi apmaldījies svešā valstī.",
-    "ēdis apšaubāmu ielas ēdienu.",
-    "uzkāpis kalnā.",
-    "laidies ar trošu nobraucienu pāri kanjonam vai mežam.",
-    "jājis ar zirgu.",
-    "apmeklējis aktīvu vai snaudošu vulkānu.",
-    "gulējis zem klajas debess bez telts.",
-    "lidojis gaisa balonā.",
-    "piedzīvojis tik briesmīgu saules apdegumu, ka āda lobījās.",
-    "ceļojis uz kādu valsti pilnīgi viens.",
-    "apmeklējis 'spoku' vietu naktī.",
-    "orientējies, izmantojot tikai papīra karti un kompasu.",
-    "palicis hostelī ar vairāk nekā 10 cilvēkiem vienā istabā.",
-    "kaulējies par cenu tirgū.",
-    "aviokompānija pazaudējusi manu bagāžu.",
-    "slēpojis vai snovojis.",
-    "mēģinājis sērfot.",
-    "bijis uz laivas lielā vētrā.",
-    "man bijis atvaļinājuma romāns.",
-    "nozadzis kaut ko no viesnīcas numura.",
-    "peldējies kails okeānā vai ezerā.",
-    "pārkāpis privātīpašuma robežas.",
-    "izpētījis pamestu ēku.",
-    "niris ar haizivīm.",
-    "aizgājis no darba dramatiskā veidā.",
-    "aizsūtījis riskantu īsziņu un uzreiz to nožēlojis.",
-    "ignorējis ārsta ieteikumu.",
-    "saskāries aci pret aci ar savām lielākajām bailēm.",
-    "peldējis ar delfīniem.",
-    "lēcis ar gumiju.",
-    "lidojis helikopterā.",
-    "man bijušas šuves.",
-    "aizdedzinājis kaut ko ar palielināmo stiklu.",
-    "staigājis basām kājām publiskā vietā.",
-    "iedevis viltotu telefona numuru.",
-    "apēdis pasaules asāko piparu.",
-    "bijis 'izlaušanās istabā' un neticis ārā.",
-    "metis šautriņu un netrāpījis mērķī.",
-    "noskrējis maratonu.",
-    "sacerējis dziesmu.",
-    "publicējis kādu savu rakstu.",
-    "uzsācis savu biznesu.",
-    "bijis veģetārietis vai vegāns ilgāk par gadu.",
-    "brīvi runājis svešvalodā.",
-    "nodarbojies ar kādu sporta veidu sacensību līmenī.",
-    "bijis komandas kapteinis.",
-    "salabojis pats savu mašīnu.",
-    "uzbūvējis mēbeli no nulles.",
-    "braucis ar vienriteni.",
-    "žonglējis.",
-    "atrisinājis kādu noziegumu.",
-    "izglābis dzīvnieka dzīvību.",
-    "kaulējies par algu.",
-    "uzstājies ar publisku runu vairāk nekā 50 cilvēkiem.",
-    "ceļojis ilgāk par mēnesi no vietas.",
-    "dzīvojis citā valstī.",
-
-    // 4. sadaļa: Attiecības un Iepazīšanās
-    "bijusi simpātija pret skolotāju.",
-    "bijis aklajā randiņā, ko sarunājis draugs.",
-    "izmantojis iepazīšanās aplikāciju.",
-    "pēkšņi pārtraucis komunikāciju ar kādu (ghosting).",
-    "kāds pēkšņi pārtraucis komunikāciju ar mani.",
-    "man bijusi salauzta sirds.",
-    "salauzis kādam sirdi.",
-    "ticies ar kādu, kurš nepatika maniem vecākiem.",
-    "izšķīries ar kādu, nosūtot īsziņu.",
-    "rakstījis mīlestības vēstuli.",
-    "izveidojis dziesmu sarakstu (playlist) simpātijai.",
-    "man bijis slepens pielūdzējs.",
-    "ticies ar diviem cilvēkiem vienlaicīgi, viņiem to nezinot.",
-    "aizmirsis svarīgu gadadienu.",
-    "teicis 'es tevi mīlu', to nedomājot.",
-    "bijis patiesi iemīlējies.",
-    "sagājis atpakaļ kopā ar bijušo.",
-    "melojis par savu attiecību statusu.",
-    "man bijusi simpātija pret drauga partneri.",
-    "raudājis par šķiršanos ilgāk par mēnesi.",
-    "bijis 'tas trešais' attiecībās.",
-    "pārbaudījis partnera telefonu bez atļaujas.",
-    "ticies ar kādu, kurš ir vairāk nekā 10 gadus vecāks par mani.",
-    "ticies ar kādu, kurš ir vairāk nekā 10 gadus jaunāks par mani.",
-    "man bijusi simpātija pret darba kolēģi.",
-    "pārtraucis ilgstošas attiecības (vairāk nekā 3 gadi).",
-    "bijis atvērtās vai poliamoriskās attiecībās.",
-    "melojis par savu bijušo partneru skaitu.",
-    "ticējis, ka esmu iemīlējies no pirmā acu skatiena.",
-    "uzturējis tālsatiksmes attiecības ilgāk par gadu.",
-    "bildinājis kādu.",
-    "ticis bildināts.",
-    "atteicis bildinājumu.",
-    "devies uz randiņu ar kādu, ar ko iepazinos internetā.",
-    "izveidojis viltus profilu iepazīšanās aplikācijā.",
-    "bijusi simpātija pret izdomātu tēlu.",
-    "stalkojis bijušā sociālos tīklus ilgāk par stundu.",
-    "iepazīstinājis partneri ar saviem vecākiem.",
-    "neieredzējis drauga partneri, bet izlicies, ka viss kārtībā.",
-    "strīdējies ar partneri publiskā vietā.",
-    "bijis dubultajā randiņā.",
-    "saņēmis ļoti dārgu dāvanu no partnera.",
-    "dāvinājis ļoti dārgu dāvanu partnerim.",
-    "man bijis partneris, kurš nesaprātās ar maniem draugiem.",
-    "palicis attiecībās, par kurām zināju, ka tās ir beigušās.",
-    "mēģinājis mainīt partnera ieradumus.",
-    "apzināti dzīvojis celibātā ilgāk par gadu.",
-    "bijis randiņā, ko sarunājis ģimenes loceklis.",
-    "skatījies uz citiem, būdams attiecībās.",
-    "iemīlējies kādā, kurš bija emocionāli nepieejams.",
-    "bijis 'spārna cilvēks' (wingman/wingwoman).",
-    "sabojājis kādam randiņu.",
-    "rakstījis dzejoli kādam.",
-    "bijis randiņā, kurā nebija par ko runāt.",
-    "apmaksājis visu pirmajā randiņā.",
-    "sagaidījis, ka partneris apmaksās visu pirmajā randiņā.",
-    "partneris nav ieradies uz randiņu.",
-    "pārtraucis randiņu priekšlaicīgi, jo tas bija tik slikts.",
-    "fantazējis par sava drauga brāli vai māsu.",
-    "bijusi tik stipra simpātija pret slavenību, ka tas likās reāli.",
-    "devis kādam otru iespēju, kad to nevajadzēja darīt.",
-    "uzsācis 'plākstera' attiecības uzreiz pēc šķiršanās.",
-    "bijis greizsirdīgs uz partnera draugiem.",
-    "melojis partnerim, lai izvairītos no strīda.",
-    "bijis uz bijušā partnera kāzām.",
-    "saglabājis dāvanas no bijušā.",
-    "sapņojis par precēšanos.",
-    "domājis par to, kādi izskatītos mani bērni ar kādu konkrētu cilvēku.",
-    "ar partneri bijusi 'brīvbiļešu' vienošanās (hall pass).",
-    "mēģinājis pāru terapiju.",
-    "bijis randiņā, kas likās kā darba intervija.",
-    "bijis 'toksiskais' partneris attiecībās.",
-    "palīdzējis draugam sarakstīt īsziņu simpātijai.",
-    "izveidojis grandiozu romantisku žestu.",
-    "draugs salauzis manu sirdi.",
-    "bijis 'friend zone'.",
-    "ielicis kādu 'friend zone'.",
-    "iemīlējies labākajā draugā.",
-    "ticies ar darba kolēģi.",
-    "man bijis 'darba vīrs' vai 'darba sieva'.",
-    "devies uz randiņu ātrās ēdināšanas restorānā.",
-    "man bijis partneris, kurš briesmīgi gatavoja.",
-    "mēģinājis gatavot partnerim un izgāzies.",
-    "partnera ģimenei es nepatiku.",
-    "man nepatika partnera ģimene.",
-    "publiski izrādījis jūtas tā, ka citiem kļuva neērti.",
-    "strīdējies ar partneri par sīkumiem.",
-    "uzvarējis strīdā ar partneri.",
-    "ļāvis partnerim uzvarēt strīdā.",
-    "izlicies, ka man patīk partnera hobijs.",
-    "noskatījies veselu seriālu, ko mans partneris ienīda.",
-
-    // 5. sadaļa: 18+ un Pikanti
-    "piedzīvojis vienas nakts sakaru.",
-    "bijis 'draugi ar priekšrocībām' attiecībās.",
-    "aizsūtījis 'netīru' īsziņu nepareizajam cilvēkam.",
-    "peldējies kails kopā ar vairāk nekā vienu cilvēku.",
-    "uzfilmējis seksa video, pat ja to izdzēsu.",
-    "izmantojis roku dzelžus, virves vai citus ierobežojumus.",
-    "nodarbojies ar seksu publiskā vai daļēji publiskā vietā.",
-    "piedzīvojis trijatā vai ar vairāk partneriem.",
-    "melojis par savu vārdu vienas nakts sakara laikā.",
-    "nodarbojies ar seksu pludmalē.",
-    "nodarbojies ar seksu mašīnā.",
-    "pievienojies 'mile high club' (seks lidmašīnā).",
-    "man bijusi simpātija pret drauga vecāku.",
-    "spēlējis lomu spēles guļamistabā.",
-    "sūtījis savu kailfoto vai seksuāli provokatīvu foto.",
-    "saņēmis nepieprasītu kailfoto.",
-    "skatījies pornogrāfiju kopā ar partneri.",
-    "piedzīvojis 'kauna gājienu' (walk of shame) nākamajā rītā.",
-    "tēlojis orgasmu.",
-    "nodarbojies ar seksu ar darba kolēģi.",
-    "skūpstījies ar pilnīgu svešinieku bārā vai klubā.",
-    "man bijuši vairāki seksa partneri 24 stundu laikā.",
-    "redzējis seksuālu sapni par kādu no šīs grupas.",
-    "izmantojis ēdienu (piem., putukrējumu vai šokolādi) guļamistabā.",
-    "runājis 'netīri' valodā, ko labi nepārvaldu.",
-    "izpildījis vai saņēmis striptīzu.",
-    "bijis striptīza klubā.",
-    "nēsājis 'seksīgu' Helovīna kostīmu.",
-    "salauzis mēbeli, nodarbojoties ar seksu.",
-    "ticis pieķerts seksa laikā.",
-    "partneris aizmiga seksa laikā.",
-    "partnera vecāks vai istabas biedrs ienāca pa durvīm.",
-    "aizmirsis tās personas vārdu, ar kuru gulēju.",
-    "man nācies slēpties skapī vai zem gultas, lai mani neatrod.",
-    "mājdzīvnieks nopietni iztraucēja intīmu brīdi.",
-    "guvis ar seksu saistītu traumu.",
-    "manu 'seksīgo' apakšveļu pilnībā ignorēja vai par to pasmējās.",
-    "mēģinājis pozu no Kamasutras un smagi izgāzies.",
-    "seksa laikā saplīsis prezervatīvs.",
-    "bijis kopā ar kādu, kurš briesmīgi skūpstījās.",
-    "romantisku brīdi izjauca neizbēgama ķermeņa skaņa.",
-    "nodarbojies ar seksu, kamēr fonā bija ieslēgts televizors.",
-    "seksa laikā domājis par kaut ko pilnīgi nesaistītu, piemēram, iepirkumu sarakstu.",
-    "seksa laikā sarāvis muskuli krampī.",
-    "partneris gultā nosauca nepareizo vārdu.",
-    "mēģinājis būt seksīgs, bet sanācis vienkārši neveikli.",
-    "nodarbojies ar seksu brīvā dabā.",
-    "nodarbojies ar seksu pa telefonu vai video zvanu.",
-    "apmeklējis nūdistu pludmali.",
-    "skūpstījies ar vairāk nekā vienu cilvēku vienā vakarā.",
-    "istabas biedrs mani 'izlicis' no istabas, lai varētu nodarboties ar seksu.",
-    "esmu 'izlicis' istabas biedru no istabas, lai varētu nodarboties ar seksu.",
-    "nodarbojies ar seksu vecāku mājā, kamēr viņi bija mājās.",
-    "man bijušas bažas par grūtniecību.",
-    "pārbaudījies uz seksuāli transmisīvajām slimībām.",
-    "gulējis ar savu priekšnieku.",
-    "maksājis par seksu.",
-    "kāds man maksājis par seksu.",
-    "nodarbojies ar seksu kāda iemesla dēļ, kas nav bauda (piem., žēlums, pienākums).",
-    "man bijis sekss ar kādu, ko satiku tajā pašā dienā.",
-    "izmantojis seksa rotaļlietu.",
-    "redzējis, kā citi nodarbojas ar seksu dzīvajā.",
-    "man bijis 'ātrais' tualetē.",
-    "pārgulējis ar bijušo pēc šķiršanās.",
-    "kāds, kurš nav profesionālis, man uzdevis vai esmu uzdevis klēpja deju.",
-    "nodarbojies ar seksu teltī.",
-    "nodarbojies ar seksu baseinā vai džakuzi.",
-    "man bijusi seksuāla fantāzija par multfilmas tēlu.",
-    "bijis kādam 'plāksteris' pēc šķiršanās.",
-    "man bijis sekss, kas ilga visu nakti.",
-    "man bijis sekss, kas ilga mazāk par 5 minūtēm.",
-    "atradis iemeslu, lai aizietu uzreiz pēc seksa.",
-    "man bijis partneris, kurš bija ievērojami 'perversāks' par mani.",
-    "man bijis partneris, kurš bija ievērojami 'konservatīvāks' par mani.",
-    "piedzīvojis seksuālu pieredzi, ar kuru joprojām lepojos.",
-    "piedzīvojis seksuālu pieredzi, par kuru joprojām ir kauns.",
-    "pārgulējis ar draugu, un pēc tam bija neveikli.",
-    "pārgulējis ar draugu, un pēc tam nebija neveikli.",
-    "bijis dominējošs guļamistabā.",
-    "bijis pakļāvīgs guļamistabā.",
-    "izmantojis acu apsēju intīmā brīdī.",
-    "runājis par saviem fetišiem ar partneri.",
-    "bijis seksa preču veikalā.",
-    "man bijusi ar seksu saistīta iesauka.",
-    "bijis ar partneri, kuram bija ļoti skaļš orgasms.",
-    "uztraucies, ka esmu pārāk skaļš seksa laikā.",
-    "jutis pievilcību pret kādu politiķi.",
-    "redzējis seksa sapni par savu priekšnieku.",
-    "atstājis kādam 'knikšķi'.",
-    "nodarbojies ar seksu, lai padarītu kādu citu greizsirdīgu.",
-    "saņēmis orgasmu no orālā seksa.",
-    "sniedzis orgasmu ar orālo seksu.",
-    "izmantojis 'seksa kauliņus' vai līdzīgus spēļu elementus.",
-    "nodarbojies ar seksu transportlīdzeklī, kas kustējās.",
-    "bijis ar partneri, kuram bija man dīvains fetišs.",
-    "mēģinājis anālo seksu (gan dodot, gan saņemot).",
-    "sūtījis 'sekstus' (sexting).",
-    "man bijis 'cukura tētuks' vai 'cukura mammīte'.",
-    "bijis 'cukura bērniņš'.",
-    "piedzīvojis trijatā ar diviem viena dzimuma cilvēkiem.",
-    "izmantojis iepazīšanās aplikāciju tieši vienas nakts sakariem.",
-    "nodarbojies ar seksu ar kādu, kura uzvārdu nezināju.",
-    "man bijis 'žēluma' sekss.",
-    "iedevis viltotu telefona numuru pēc seksa.",
-    "pārtraucis komunikāciju ar 'draugu ar priekšrocībām'.",
-    "nodarbojies ar seksu pielaikošanas kabīnē.",
-    "nodarbojies ar seksu uz virtuves letes.",
-    "nodarbojies ar seksu katrā mājas istabā.",
-    "izmantojis 'drošības vārdu'.",
-    "piedzīvojis publisku apģērba kļūmi ar seksuālu raksturu.",
-    "kāds rakstījis uz mana ķermeņa ar pildspalvu.",
-    "piedalījies 'slapjo t-kreklu' konkursā.",
-    "nodarbojies ar seksu pirmajā randiņā.",
-    "masturbējis darbā.",
-    "man bijusi seksuāla doma par prezidentu vai premjerministru.",
-    "piedzīvojis trijatā, kur es biju vienīgais sava dzimuma pārstāvis.",
-    "nodarbojies ar seksu ar kādu no citas valsts.",
-    "redzējis sapni, ka man ir sekss ar draugu, un pēc tam jutos neveikli viņa klātbūtnē.",
-    "man bijusi tik slikta seksuālā pieredze, ka vairs nekad nerunāju ar to cilvēku.",
-    "man bijusi tik laba seksuālā pieredze, ka joprojām par to domāju."
-];
-
-
-    const latviaTriviaQuestions = [
-    // === Vēsture un Politika ===
-    {"question":"Kurā gadā tika proklamēta Latvijas Republika?","options":["1917","1918","1920","1921"],"answer":"1918"},
-    {"question":"Kas bija pirmais Latvijas Valsts prezidents?","options":["Kārlis Ulmanis","Gustavs Zemgals","Jānis Čakste","Alberts Kviesis"],"answer":"Jānis Čakste"},
-    {"question":"Kā sauc notikumu 1991. gada janvārī, kad iedzīvotāji aizstāvēja Latvijas neatkarību?","options":["Dziesmotā revolūcija","Atmodas laiks","Barikādes","Tautas fronte"],"answer":"Barikādes"},
-    {"question":"Kurā gadā Latvija iestājās Eiropas Savienībā?","options":["2001","2004","2007","2010"],"answer":"2004"},
-    {"question":"Kurš no šiem līgumiem Otrā pasaules kara priekšvakarā slepeni sadalīja Eiropu?","options":["Versaļas līgums","Molotova-Ribentropa pakts","Minhenes vienošanās","Trianonas līgums"],"answer":"Molotova-Ribentropa pakts"},
-    {"question":"Cik deputātu ir Latvijas parlamentā, Saeimā?","options":["80","100","120","150"],"answer":"100"},
-    {"question":"Kāds bija Latvijas valūtas nosaukums pirms eiro?","options":["Lits","Krona","Marks","Lats"],"answer":"Lats"},
-    {"question":"Kā sauc Latvijas Tautas frontes dibināšanas gadu?","options":["1988","1989","1990","1991"],"answer":"1988"},
-    {"question":"Kas ir Latvijas Nacionālo bruņoto spēku augstākais virspavēlnieks?","options":["Aizsardzības ministrs","Saeimas priekšsēdētājs","Valsts prezidents","Armijas komandieris"],"answer":"Valsts prezidents"},
-    {"question":"Kurā datumā tiek atzīmēta Lāčplēša diena?","options":["18. novembrī","11. novembrī","4. maijā","21. augustā"],"answer":"11. novembrī"},
-    {"question":"Kā sauc kustību, kas noveda pie Latvijas neatkarības atjaunošanas?","options":["Atmoda","Pārbūve","Perestroika","Atdzimšana"],"answer":"Atmoda"},
-    {"question":"Kurā gadā notika pēdējā naudas reforma, pārejot uz eiro?","options":["2012","2013","2014","2015"],"answer":"2014"},
-    {"question":"Kurā gadā Latvija pievienojās NATO?","options":["1999","2002","2004","2008"],"answer":"2004"},
-    {"question":"Kurš viduslaiku militārais ordenis valdīja Latvijas teritorijā?","options":["Templiešu ordenis","Hospitāļu ordenis","Livonijas ordenis","Teitoņu ordenis"],"answer":"Livonijas ordenis"},
-    {"question":"Kā sauc 1905. gada notikumus Latvijā?","options":["Brīvības cīņas","Pirmā Atmoda","1905. gada revolūcija","Zemnieku nemieri"],"answer":"1905. gada revolūcija"},
-    {"question":"Kas bija pēdējais Latvijas Valsts prezidents pirms padomju okupācijas?","options":["Jānis Čakste","Gustavs Zemgals","Alberts Kviesis","Kārlis Ulmanis"],"answer":"Kārlis Ulmanis"},
-    {"question":"Kurā gadā tika pieņemta Latvijas Republikas Satversme?","options":["1918","1920","1922","1934"],"answer":"1922"},
-    {"question":"Cik gadus ilga padomju okupācija Latvijā?","options":["40 gadus","45 gadus","50 gadus","55 gadus"],"answer":"50 gadus"},
-    {"question":"Kā sauca slepeno pretošanās kustību padomju okupācijas laikā?","options":["Mežabrāļi","Sarkanie strēlnieki","Baltie partizāni","Leģionāri"],"answer":"Mežabrāļi"},
-    {"question":"Kurš ir pašreizējais Latvijas Valsts prezidents?","options":["Egils Levits","Raimonds Vējonis","Andris Bērziņš","Edgars Rinkēvičs"],"answer":"Edgars Rinkēvičs"},
-    {"question":"Kurā datumā tiek atzīmēta Latvijas Republikas Neatkarības atjaunošanas diena?","options":["21. augustā","18. novembrī","4. maijā","Lāčplēša dienā"],"answer":"4. maijā"},
-    {"question":"Kas bija hercogs, kura laikā Kurzemes un Zemgales hercogiste piedzīvoja lielāko uzplaukumu?","options":["Hercogs Jēkabs","Hercogs Gothards","Hercogs Frīdrihs","Hercogs Vilhelms"],"answer":"Hercogs Jēkabs"},
-    {"question":"Kāds bija segvārds Gustavam Celmiņam, Pērkonkrusta vadonim?","options":["Āboliņš","Taurētājs","Vanags","Vadonis"],"answer":"Vanags"},
-    {"question":"Kura pilsēta bija pirmā Latvijas Pagaidu valdības mītne?","options":["Rīga","Cēsis","Liepāja","Ventspils"],"answer":"Liepāja"},
-    {"question":"Kāds notikums iezīmēja Otrā pasaules kara beigas Latvijas teritorijā?","options":["Rīgas atbrīvošana","Kurzemes katla kapitulācija","Jaltas konference","Vācijas kapitulācija"],"answer":"Kurzemes katla kapitulācija"},
-
-    // === Ģeogrāfija un Daba ===
-    {"question":"Kura ir Latvijas garākā upe?","options":["Venta","Lielupe","Daugava","Gauja"],"answer":"Gauja"},
-    {"question":"Kā sauc augstāko punktu Latvijā?","options":["Gaiziņkalns","Sirdskalns","Lielais Liepukalns","Dēliņkalns"],"answer":"Gaiziņkalns"},
-    {"question":"Kurā pilsētā atrodas platākais ūdenskritums Eiropā - Ventas rumba?","options":["Ventspilī","Kuldīgā","Tukumā","Liepājā"],"answer":"Kuldīgā"},
-    {"question":"Kurš ir lielākais ezers Latvijā pēc platības?","options":["Usmas ezers","Rāznas ezers","Burtnieku ezers","Lubāns"],"answer":"Lubāns"},
-    {"question":"Kura pilsēta tiek dēvēta par 'pilsētu uz septiņiem pakalniem'?","options":["Cēsis","Valmiera","Kuldīga","Talsi"],"answer":"Talsi"},
-    {"question":"Kurā Latvijas novadā atrodas Aglonas bazilika?","options":["Zemgalē","Kurzemē","Vidzemē","Latgalē"],"answer":"Latgalē"},
-    {"question":"Kā sauc lielāko purvu Latvijā?","options":["Cenas tīrelis","Teiču purvs","Stiklu purvi","Ķemeru tīrelis"],"answer":"Teiču purvs"},
-    {"question":"Cik nacionālo parku ir Latvijā?","options":["3","4","5","6"],"answer":"4"},
-    {"question":"Kura ir Latvijas trešā lielākā pilsēta pēc iedzīvotāju skaita?","options":["Jūrmala","Ventspils","Jelgava","Liepāja"],"answer":"Liepāja"},
-    {"question":"Kā sauc slaveno smilšakmens atsegumu Gaujas krastā?","options":["Ērgļu klintis","Gūtmaņa ala","Sietiņiezis","Zilaiskalns"],"answer":"Sietiņiezis"},
-    {"question":"Kura sala ir lielākā Latvijā?","options":["Doles sala","Zaķusala","Mangaļsala","Roņu sala"],"answer":"Doles sala"},
-    {"question":"Ar cik valstīm Latvijai ir sauszemes robeža?","options":["2","3","4","5"],"answer":"4"},
-    {"question":"Kura pilsēta ir vistālāk uz rietumiem Latvijā?","options":["Ventspils","Pāvilosta","Kolka","Liepāja"],"answer":"Liepāja"},
-    {"question":"Kā sauc Latvijas lielāko salu Rīgas līcī?","options":["Ainažu sala","Kihnu","Roņu sala","Muhu"],"answer":"Roņu sala"},
-    {"question":"Kurš Latvijas reģions ir pazīstams kā 'Zilo ezeru zeme'?","options":["Vidzeme","Kurzeme","Zemgale","Latgale"],"answer":"Latgale"},
-    {"question":"Kā sauc dabas parku, kas slavens ar savām zilajām govīm?","options":["Tērvetes dabas parks","Engures ezera dabas parks","Papes dabas parks","Dvietes paliene"],"answer":"Engures ezera dabas parks"},
-    {"question":"Kura upe plūst cauri Bauskas pilsdrupām?","options":["Daugava","Mūsa un Mēmele","Gauja","Venta"],"answer":"Mūsa un Mēmele"},
-    {"question":"Kāds ir aptuvenais Latvijas mežu īpatsvars no kopējās teritorijas?","options":["25%","35%","52%","65%"],"answer":"52%"},
-    {"question":"Kura ir lielākā pilsēta Zemgalē?","options":["Bauska","Tukums","Dobele","Jelgava"],"answer":"Jelgava"},
-    {"question":"Kāds ir nosaukums zemesragam, kur satiekas Baltijas jūra un Rīgas līcis?","options":["Mērsrags","Kolkasrags","Ainažu mols","Pāvilostas rags"],"answer":"Kolkasrags"},
-    {"question":"Kura pilsēta ir Latvijas galvaspilsēta?","options":["Daugavpils","Liepāja","Jūrmala","Rīga"],"answer":"Rīga"},
-    {"question":"Kā sauc dziļāko ezeru Latvijā?","options":["Drīdzis","Rāznas ezers","Alūksnes ezers","Usmas ezers"],"answer":"Drīdzis"},
-    {"question":"Kāda ir Latvijas valsts robežas kopējais garums?","options":["~1000 km","~1400 km","~1900 km","~2500 km"],"answer":"~1900 km"},
-    {"question":"Kura pilsēta ir pazīstama ar savu Livonijas ordeņa pili un viduslaiku festivāliem?","options":["Sigulda","Cēsis","Turaida","Bauska"],"answer":"Cēsis"},
-    {"question":"Kā sauc upi, kas plūst cauri Jelgavai?","options":["Venta","Daugava","Gauja","Lielupe"],"answer":"Lielupe"},
-
-    // === Kultūra un Māksla ===
-    {"question":"Kurš sarakstīja Latvijas valsts himnu 'Dievs, svētī Latviju!'?","options":["Rainis","Kārlis Skalbe","Kārlis Baumanis","Vilis Plūdons"],"answer":"Kārlis Baumanis"},
-    {"question":"Kāds putns ir viens no Latvijas nacionālajiem simboliem?","options":["Baltais stārķis","Baltā cielava","Zvirbulis","Pūce"],"answer":"Baltā cielava"},
-    {"question":"Kurš latviešu režisors uzņēma filmu 'Limuzīns Jāņu nakts krāsā'?","options":["Jānis Streičs","Aigars Grauba","Viesturs Kairišs","Rolands Kalniņš"],"answer":"Jānis Streičs"},
-    {"question":"Kā sauc galveno varoni Andreja Pumpura eposā?","options":["Kurbads","Lāčplēsis","Tālavas taurētājs","Spīdola"],"answer":"Lāčplēsis"},
-    {"question":"Kura Latvijas pilsēta ir slavena ar savu cietoksni, kurā dzimis mākslinieks Marks Rotko?","options":["Rēzekne","Daugavpils","Jelgava","Bauska"],"answer":"Daugavpils"},
-    {"question":"Cik gados notiek Vispārējie latviešu Dziesmu un Deju svētki?","options":["Katru gadu","Reizi 2 gados","Reizi 3 gados","Reizi 5 gados"],"answer":"Reizi 5 gados"},
-    {"question":"Kurš no šiem ir sens latviešu mitoloģijas dievs?","options":["Zevs","Pērkons","Tors","Odins"],"answer":"Pērkons"},
-    {"question":"Kā sauc lielāko un modernāko bibliotēku Rīgā?","options":["Gaismas pils","Zinātņu akadēmija","Rīgas Centrālā bibliotēka","Latvijas Nacionālā bibliotēka"],"answer":"Latvijas Nacionālā bibliotēka"},
-    {"question":"Kāds ir tradicionālais latviešu instruments?","options":["Ģitāra","Klavieres","Kokle","Bungas"],"answer":"Kokle"},
-    {"question":"Kurā pilsētā atrodas Rundāles pils?","options":["Bauskā","Jelgava","Rīgā","Tukumā"],"answer":"Bauskā"},
-    {"question":"Kurš no šiem ir slavens latviešu komponists?","options":["Mocarts","Bēthovens","Raimonds Pauls","Bahs"],"answer":"Raimonds Pauls"},
-    {"question":"Kā sauc Raiņa lugu par Jāzepu un viņa brāļiem?","options":["Uguns un nakts","Pūt, vējiņi!","Spēlēju, dancoju","Jāzeps un viņa brāļi"],"answer":"Jāzeps un viņa brāļi"},
-    {"question":"Kā sauc slaveno latviešu tēlnieku, Brīvības pieminekļa autoru?","options":["Gustavs Šķilters","Teodors Zaļkalns","Kārlis Zāle","Kārlis Jansons"],"answer":"Kārlis Zāle"},
-    {"question":"Kura grupa Eirovīzijā izpildīja dziesmu 'My Star'?","options":["Musiqq","Cosmos","Walters & Kazha","Prāta Vētra"],"answer":"Prāta Vētra"},
-    {"question":"Kāds ir galvenais Līgo svētku simbols?","options":["Ziemassvētku eglīte","Lieldienu ola","Jāņu ugunskurs","Valentīndienas sirds"],"answer":"Jāņu ugunskurs"},
-    {"question":"Kurš ir autors grāmatai 'Cilvēka bērns'?","options":["Regīna Ezera","Zigmunds Skujiņš","Jānis Jaunsudrabiņš","Vizma Belševica"],"answer":"Jānis Jaunsudrabiņš"},
-    {"question":"Kāds ir nosaukums pirmajai latviešu skaņu filmai?","options":["Zvejnieka dēls","Lāčplēsis","Pie bagātās kundzes","Tās dullās Paulīnes dēļ"],"answer":"Zvejnieka dēls"},
-    {"question":"Kāds ir Latvijas karoga krāsu salikums?","options":["Sarkans-balts-sarkans","Zils-melns-balts","Balts-sarkans-balts","Sarkans-zaļš-balts"],"answer":"Sarkans-balts-sarkans"},
-    {"question":"Kā sauc Rīgas centrālo tirgu, kura paviljoni ir bijušie dirižabļu angāri?","options":["Āgenskalna tirgus","Vidzemes tirgus","Centrāltirgus","Latgales tirgus"],"answer":"Centrāltirgus"},
-    {"question":"Kāds ir slavenākais Latvijas saldums?","options":["Skrīveru gotiņa","Laima šokolāde","Siera standziņas","Rupjmaizes kārtojums"],"answer":"Skrīveru gotiņa"},
-    {"question":"Kas ir Latvijas nacionālais kukainis?","options":["Sienāzis","Divpunktu mārīte","Bite","Taurenis"],"answer":"Divpunktu mārīte"},
-    {"question":"Kā sauc slavenāko Rīgas jūgendstila ielu?","options":["Brīvības iela","Elizabetes iela","Alberta iela","Krišjāņa Barona iela"],"answer":"Alberta iela"},
-    {"question":"Kurš ir autors slavenajai gleznai 'Pēc pirtiņas'?","options":["Vilhelms Purvītis","Janis Rozentāls","Jānis Valters","Niklāvs Strunke"],"answer":"Janis Rozentāls"},
-    {"question":"Kāds ir tradicionāls latviešu ēdiens, kas gatavots no rupjmaizes, dzērvenēm un putukrējuma?","options":["Debesmanna","Sklandrausis","Rupjmaizes kārtojums","Buberts"],"answer":"Rupjmaizes kārtojums"},
-    {"question":"Kā sauc Rīgas augstāko celtni?","options":["Zinātņu akadēmija","Saeimas nams","Pēterbaznīca","Radio un televīzijas tornis"],"answer":"Radio un televīzijas tornis"},
-
-    // === Sports ===
-    {"question":"Kura latviešu tenisiste ir uzvarējusi 'French Open' vienspēļu turnīrā?","options":["Anastasija Sevastova","Aļona Ostapenko","Larisa Neilande","Diāna Marcinkēviča"],"answer":"Aļona Ostapenko"},
-    {"question":"Kura grupa pārstāvēja Latviju Eirovīzijā un uzvarēja 2002. gadā?","options":["Prāta Vētra","Lauris Reiniks","Marie N","Musiqq"],"answer":"Marie N"},
-    {"question":"Kāds ir populārākais uzvārds Latvijā?","options":["Kalniņš","Ozoliņš","Jansons","Bērziņš"],"answer":"Bērziņš"},
-    {"question":"Kurš sporta veids ir vispopulārākais Latvijā?","options":["Futbols","Basketbols","Hokejs","Vieglatlētika"],"answer":"Hokejs"},
-    {"question":"Kāds ir Latvijas hokeja izlases talismans?","options":["Lācis","Vilks","Lauva","Rīgas Gailis"],"answer":"Rīgas Gailis"},
-    {"question":"Kā sauc slaveno latviešu basketbolistu, kurš spēlē NBA?","options":["Andris Biedriņš","Kaspars Kambala","Kristaps Porziņģis","Jānis Strēlnieks"],"answer":"Kristaps Porziņģis"},
-    {"question":"Kurā gadā Rīgā notika Pasaules čempionāts hokejā?","options":["2000","2006","2010","2018"],"answer":"2006"},
-    {"question":"Kurš latviešu skeletonists ir izcīnījis olimpisko zelta medaļu?","options":["Jānis Dukurs","Martins Dukurs","Tomass Dukurs","Ivo Šteinbergs"],"answer":"Martins Dukurs"},
-    {"question":"Kā sauc Latvijas lielāko stadionu?","options":["Skonto stadions","Daugavas stadions","Arēna Rīga","Olimpiskais sporta centrs"],"answer":"Daugavas stadions"},
-    {"question":"Kurā sporta veidā Māris Štrombergs ir divkārtējs olimpiskais čempions?","options":["Svarcelšana","Vieglatlētika","BMX riteņbraukšana","Smaiļošana"],"answer":"BMX riteņbraukšana"},
-    {"question":"Kā sauc Latvijas vīriešu basketbola izlases galveno treneri (2023. gada Pasaules kausā)?","options":["Ainars Bagatskis","Roberts Štelmahers","Luca Banchi","Igors Miglinieks"],"answer":"Luca Banchi"},
-    {"question":"Cik olimpisko medaļu ir izcīnījis šķēpmetējs Jānis Lūsis?","options":["1","2","3","4"],"answer":"3"},
-    {"question":"Kurš latviešu svarcēlājs izcīnīja sudraba medaļu 2012. gada Londonas Olimpiskajās spēlēs?","options":["Viktors Ščerbatihs","Raimonds Bergmanis","Artūrs Plēsnieks","Rebeka Koha"],"answer":"Artūrs Plēsnieks"},
-    {"question":"Kāds ir Latvijas futbola izlases lielākais panākums?","options":["Pasaules kausa finālturnīrs","UEFA Čempionu līgas uzvara","Dalība Eiropas čempionāta finālturnīrā","Nāciju līgas uzvara"],"answer":"Dalība Eiropas čempionāta finālturnīrā"},
-    {"question":"Kurā pilsētā atrodas bobsleja un kamaniņu trase?","options":["Valmiera","Cēsis","Sigulda","Rīga"],"answer":"Sigulda"},
-
-    // === Mūsdienu Latvija un Dažādi Fakti ===
-    {"question":"Kā sauc Latvijas nacionālo aviokompāniju?","options":["Ryanair","Wizzair","airBaltic","Latavio"],"answer":"airBaltic"},
-    {"question":"Kāds ir Latvijas interneta domēna saīsinājums?","options":[".lt",".la",".lv",".let"],"answer":".lv"},
-    {"question":"Kāds ir Latvijas iedzīvotāju skaits (aptuveni)?","options":["1.8 miljoni","2.5 miljoni","3 miljoni","1.5 miljoni"],"answer":"1.8 miljoni"},
-    {"question":"Kā sauc slaveno pludmali Rīgai tuvākajā kūrortpilsētā?","options":["Ventspils pludmale","Liepājas pludmale","Jūrmalas pludmale","Saulkrastu pludmale"],"answer":"Jūrmalas pludmale"},
-    {"question":"Kurā gadsimtā tika dibināta Rīga?","options":["10. gs.","11. gs.","12. gs.","13. gs."],"answer":"13. gs."},
-    {"question":"Kurā pilsētā notiek ikgadējais Ledus skulptūru festivāls?","options":["Rīgā","Jelgavā","Liepājā","Ventspilī"],"answer":"Jelgavā"},
-    {"question":"Kāds ir galvenais ingredients 'Rīgas Melnajam balzamam'?","options":["Ogas un augļi","Garšaugi un zālītes","Medus un piens","Kafija un šokolāde"],"answer":"Garšaugi un zālītes"},
-    {"question":"Kāds ir galvenais Rīgas simbols, kas redzams pilsētas ģerbonī?","options":["Lauva un atslēgas","Ērglis un zobens","Gailis un tornis","Kuģis un zvaigznes"],"answer":"Lauva un atslēgas"},
-    {"question":"Kāds ir Latvijas iedzīvotāju blīvums (cilvēki uz km²)?","options":["~30","~50","~70","~100"],"answer":"~30"},
-    {"question":"Kāds ir Latvijas karoga platuma un garuma attiecība?","options":["1:2","2:3","3:5","1:3"],"answer":"1:2"},
-    {"question":"Kāds ir Eiropas vienotais ārkārtas palīdzības dienestu numurs, kas darbojas arī Latvijā?","options":["911","113","02","112"],"answer":"112"},
-    {"question":"Kurš no šiem ir populārs Latvijas tehnoloģiju jaunuzņēmums?","options":["Bolt","Skype","Printful","Spotify"],"answer":"Printful"},
-    {"question":"Kā sauc Rīgas lielāko daudzfunkcionālo arēnu?","options":["Olimpiskais sporta centrs","Skonto halle","Arēna Rīga","Daugavas stadions"],"answer":"Arēna Rīga"},
-    {"question":"Kāda ir galvenā sastāvdaļa sklandrausim?","options":["Kartupeļi un gaļa","Rudzu milti un burkāni","Biezpiens un olas","Ogas un krējums"],"answer":"Rudzu milti un burkāni"},
-    {"question":"Kā sauc slaveno latviešu grupu, kas izpildīja dziesmu 'Debesis iekrita Tevī'?","options":["Līvi","Pērkons","Musiqq","Prāta Vētra"],"answer":"Prāta Vētra"},
-    {"question":"Kurš no šiem ir Latvijas nacionālais akmens?","options":["Dimants","Rubīns","Smaragds","Dzintars"],"answer":"Dzintars"},
-    {"question":"Cik procentu Latvijas teritorijas aizņem purvi?","options":["~2%","~5%","~10%","~15%"],"answer":"~10%"},
-    {"question":"Kā sauc tiltu Rīgā, kas ir garākais vanšu tilts Baltijā?","options":["Akmens tilts","Vanšu tilts","Dienvidu tilts","Salu tilts"],"answer":"Vanšu tilts"},
-    {"question":"Kāds ir Latvijas zvanu kods?","options":["+370","+371","+372","+375"],"answer":"+371"},
-    {"question":"Kāds ir nosaukums lielākajam mūzikas festivālam brīvā dabā Liepājā?","options":["Positivus","Summer Sound","Laba Daba","Rīgas Ritmi"],"answer":"Summer Sound"}
-]
-const spellingBeeWords = {
-    easy: [
-        
-        "game", "drink", "party", "house", "friend", "table", "music", "dance",
-        "laugh", "smile", "happy", "water", "light", "night", "world", "money",
-        "story", "green", "blue", "white", "black", "right", "wrong", "hello",
-        "again", "thanks", "please", "sorry", "love", "hate", "true", "false",
-        "never", "always", "magic", "dream", "voice", "sound", "work", "play",
-        "today", "apple", "bread", "cheese", "earth", "fire", "heart", "idea",
-        "juice", "karma", "lemon", "metal", "ocean", "paper", "queen", "river",
-        "sugar", "tiger", "under", "video", "woman", "year", "zebra", "above",
-        "actor", "alive", "angel", "basic", "beach", "birth", "blood", "board",
-        "brain", "brave", "brown", "chair", "chart", "chief", "child", "class",
-        "clean", "clear", "clock", "cloud", "coast", "color", "court", "cover",
-        "cream", "crime", "cross", "crowd", "cycle", "daily", "depth", "doubt",
-        "drama", "dress", "drive", "early", "eight", "empty", "enemy", "equal",
-        "error", "event", "every", "exact", "faith", "final", "first", "floor",
-        "focus", "force", "front", "fruit", "glass", "grade", "grand", "grass",
-        "great", "group", "guard", "guess", "guest", "guide", "heavy", "horse",
-        "hotel", "human", "image", "index", "inner", "input", "issue", "joint"
-    ],
-    medium: [
-        
-        "bottle", "question", "answer", "another", "because", "beautiful", "challenge",
-        "computer", "language", "message", "morning", "picture", "remember", "server",
-        "multiplayer", "tomorrow", "yesterday", "important", "difficult", "interesting",
-        "example", "exercise", "experience", "knowledge", "library", "government",
-        "environment", "technology", "celebrate", "congratulate", "understand", "believe",
-        "receive", "achieve", "address", "business", "calendar", "committee",
-        "different", "finally", "foreign", "guarantee", "immediate", "leisure",
-        "neighbor", "privilege", "schedule", "separate", "sincerely", "surprise",
-        "thursday", "wednesday", "accident", "actually", "although", "analysis",
-        "approach", "argument", "article", "audience", "available", "background",
-        "behavior", "benefit", "campaign", "category", "character", "chocolate",
-        "collection", "commercial", "community", "company", "complete", "condition",
-        "conference", "confidence", "connection", "consider", "consumer", "continue",
-        "contribution", "conversation", "creative", "creature", "culture", "customer",
-        "decision", "defense", "definition", "delivery", "department", "description",
-        "determine", "development", "difference", "direction", "director", "discipline",
-        "discovery", "discussion", "disease", "distance", "distribution", "division",
-        "document", "education", "effective", "election", "employee", "energy",
-        "engineer", "entertain", "equipment", "especially", "establish", "evening",
-
-        "evidence", "exchange", "executive", "existence", "expansion", "expectation",
-        "explanation", "expression", "facility", "failure", "familiar", "favorite",
-        "financial", "football", "frequently", "function", "generation", "governor",
-        "gratitude", "happiness", "headache", "heritage", "hospital", "household",
-        "however", "identity", "imagination", "improvement", "including", "increase",
-        "individual", "industry", "influence", "information", "initial", "initiative",
-        "innocent", "instance", "instead", "instruction", "insurance", "intelligence",
-        "intention", "interview", "introduction", "investment", "judgment", "kitchen",
-        "leadership", "literature", "location", "magazine", "maintenance", "management",
-        "manager", "marketing", "material", "measurement", "medicine", "membership",
-        "memory", "million", "minority", "mistake", "modern", "moment", "mountain"
-    ],
-    hard: [
-        
-        "necessary", "embarrassing", "onomatopoeia", "phenomenon", "millennium",
-        "questionnaire", "rhythm", "liaison", "conscientious", "bureaucracy",
-        "manoeuvre", "sovereignty", "entrepreneur", "mischievous", "idiosyncrasy",
-        "acquiesce", "anachronism", "camaraderie", "demagogue", "ubiquitous",
-        "garrulous", "hieroglyphics", "juxtaposition", "kleptomaniac", "logorrhea",
-        "magnanimous", "narcissistic", "obsequious", "paradigm", "quixotic",
-        "sacrilegious", "tête-à-tête", "vicarious", "worcestershire", "yacht",
-        "zealous", "conscience", "maintenance", "pronunciation", "recommend",
-        "restaurant", "cemetery", "definitely", "discipline", "extraordinary",
-        "fascinate", "fluorescent", "harass", "independent", "jewelry",
-        "maneuver", "occasionally", "occurrence", "parallel", "possession",
-        "preferred", "procedure", "professor", "promise", "psychology",
-        "publicly", "really", "reference", "relevant", "religious",
-        "repetition", "rhetorical", "ridiculous", "sandwich", "satellite",
-        "scissors", "secretary", "seize", "sensible", "sergeant",
-        "significant", "similar", "skillful", "successful", "sufficient",
-        "supersede", "syllable", "symmetrical", "synonymous", "tangible",
-        "technical", "temperature", "temporary", "tendency", "thoroughly",
-        "thought", "tomorrow", "tragedy", "truly", "twelfth",
-        "tyranny", "unanimous", "unnecessary", "until", "usually",
-        "vacuum", "valuable", "vegetable", "vehicle", "vicious",
-        "villain", "visible", "vitamin", "weather", "weird",
-        "whether", "wholly", "yolk", "accommodate", "achieve",
-        "argument", "assassination", "basically", "beginning", "believe",
-        "bizarre", "brilliant", "colleague", "column", "coming",
-        "committed", "comparison", "concede", "conceive", "condemn",
-        "congratulations", "controversy", "convenience", "correspondence", "criticize",
-        "curiosity", "deceive", "deductible", "descendant", "desperate",
-        "dilemma", "disappear", "disappoint", "ecstasy", "efficient",
-        "eighth", "eligible", "eminent", "exaggerate", "exceed",
-        "excellent", "existence", "experience", "fahrenheit", "familiar",
-        "february", "fictitious", "fiery", "foreign", "fourth",
-        "fulfill", "gauge", "gorgeous", "government", "grammar",
-        "grateful", "guerrilla", "height", "heinous", "hemorrhage"
-    ]
-};
-
-const izaicinajumiUnUzdevumi = [
-    // === Noteikumi (Rules) ===
-    "JAUNS LIKUMS: Nākamās 3 kārtas nedrīkst teikt vārdu 'dzert'. Kas to pasaka, dzer sodu.",
-    "ĪKŠĶU KARALIS: Tu esi Īkšķu Karalis. Kad tu jebkurā brīdī uzliec īkšķi uz galda, visiem jāseko. Pēdējais, kurš to izdara, dzer.",
-    "AKCENTS: Runā ar izdomātu akcentu nākamās 3 kārtas. Ja aizmirsti, dzer.",
-    "JAUTĀJUMU MEISTARS: Drīksti runāt tikai jautājuma formā līdz savai nākamajai kārtai. Ja pasaki apgalvojumu, dzer.",
-    "ČŪSKA: Tu esi čūska. Ja kāds paskatās tev acīs, viņam ir jādzer. Tu zaudē šo spēju savā nākamajā gājienā.",
-    "ROKU MAIŅA: Visiem jādzer ar savu vājāko roku līdz nākamajam šādam uzdevumam. Sods par kļūdīšanos - vēl viens malks.",
-    "VĀRDU MEDĪBAS: Izvēlies vārdu (piem., 'alus'). Nākamais, kurš to pateiks, dzer.",
-    "TREŠĀ PERSONA: Runā par sevi trešajā personā nākamo apli (piem., 'Jānis tagad dzers'). Ja aizmirsti, dzer.",
-    "BEZ VĀRDIEM: Nedrīksti saukt citus spēlētājus vārdos nākamos 3 gājienus. Drīkst tikai norādīt vai aprakstīt. Par kļūdu - dzer.",
-    "PANTIŅŠ: Pirms katra malka tev jānoskaita kāds pantiņš (piem., 'Rūķīts mans, nāc iedzer ar mani!'). Ja aizmirsti, dzer dubultā.",
-    "ROBIN HUDS: Katru reizi, kad tev jādzer, tu vari izvēlēties citu spēlētāju, kurš dzer pusi no tava soda.",
-    "TITĀNIKS: Kad tu sāc dzert, tev jāpaceļ mazais pirkstiņš. Ja aizmirsti, dzer vēl vienu malku.",
-    "MINISTRU KABINETS: Tev jāpieceļas kājās, kad saki kāda cita spēlētāja vārdu. Ja aizmirsti, dzer.",
-    "LAIMĪGAIS SKAITLIS: Izvēlies skaitli no 1 līdz 10. Pasaki to skaļi. Nākamreiz, kad kāds piemin šo skaitli, viņam jādzer.",
-
-    // === Balsojumi (Votes) ===
-    "BALSOJUMS: Visi nobalso, kurš visdrīzāk izdzīvotu zombiju apokalipsē. Šis cilvēks liek kādam iedzert.",
-    "BALSOJUMS: Visi nobalso, kuram ir stilīgākais apģērbs. Šis cilvēks var likt diviem cilvēkiem iedzert.",
-    "BALSOJUMS: Visi nobalso, kurš visvairāk laika pavada telefonā. Šis cilvēks nedrīkst aiztikt savu telefonu 3 kārtas. Ja pārkāpj, dzer.",
-    "BALSOJUMS: Visi nobalso, kurš ir klusākais šajā spēlē. Šim cilvēkam ir jāpasaka joks. Ja neviens nesmejas, viņš dzer.",
-    "BALSOJUMS: Visi nobalso, kurš visdrīzāk kļūtu par miljonāru. Šis cilvēks var sadalīt 5 malkus starp pārējiem.",
-    "BALSOJUMS: Kurš visdrīzāk apēstu picu ar ananasiem? Šis cilvēks paskaidro savu izvēli un iedzer.",
-    "BALSOJUMS: Kuram ir vissmieklīgākie smiekli? Šim cilvēkam ir jāpasmejas un jāiedzer.",
-    "BALSOJUMS: Kurš visdrīzāk aizmigtu kino? Šis cilvēks iedzer.",
-    "BALSOJUMS: Kurš vislabāk dzied? Šim cilvēkam ir jānodzied kādas dziesmas piedziedājums. Pārējie novērtē. Ja vērtējums ir slikts, viņš dzer.",
-    "BALSOJUMS: Kurš visdrīzāk varētu vadīt valsti? Šis cilvēks pasaka vienu likumu, ko viņš ieviestu, un izvēlas, kurš dzer par godu jaunajam likumam.",
-    "BALSOJUMS: Kurš visdrīzāk uzvarētu kautiņā? Šis cilvēks izvēlas savu pretinieku un abi iedzer.",
-    "BALSOJUMS: Kuram ir labākā deju kustība? Parādi to! Pēc tam liec kādam iedzert.",
-    "BALSOJUMS: Kurš visdrīzāk apprecētos pirmais? Šis cilvēks pasaka tostu par mīlestību un visi dzer.",
-    "BALSOJUMS: Kurš visdrīzāk notērētu visu naudu vienā dienā? Šis cilvēks iedzer.",
-    "BALSOJUMS: Kurš ir vislielākais optimists grupā? Šis cilvēks pasaka kaut ko iedvesmojošu un visi dzer.",
-
-    // === Ātrie Izaicinājumi (Quick Challenges) ===
-    "ĀTRAIS IZAICINĀJUMS: Nosauc 5 Latvijas upes 10 sekundēs. Ja neizdodas, dzer.",
-    "ĀTRAIS IZAICINĀJUMS: Izpildi 10 pietupienus 15 sekundēs. Ja neizdodas vai atsakies, dzer.",
-    "ĀTRAIS IZAICINĀJUMS: Alfabēts. Sākot ar 'A', katrs sauc nākamo burtu. Kurš kļūdās vai vilcinās, dzer.",
-    "ĀTRAIS IZAICINĀJUMS: Pasaki teikumu, kas satur vārdus 'krokodils', 'ministrs' un 'mikrofons'. Ja neizdodas 15 sekundēs, dzer.",
-    "ĀTRAIS IZAICINĀJUMS: Neaiztiekot grīdu ar rokām, novelc vienu zeķi. Ja nevari, dzer.",
-    "ĀTRAIS IZAICINĀJUMS: Nosauc 3 lietas, kas atskaņojas ar vārdu 'galds'. Ja nevari 10 sekundēs, dzer.",
-    "ĀTRAIS IZAICINĀJUMS: Stāvi uz vienas kājas 30 sekundes. Ja nokrīti, dzer.",
-    "ĀTRAIS IZAICINĀJUMS: Pasaki 'glāze, šķīvis, nazis, dakša' piecas reizes ātri un bez kļūdām. Ja kļūdies, dzer.",
-    "ĀTRAIS IZAICINĀJUMS: Aizturi elpu uz 20 sekundēm. Ja neizdodas, dzer.",
-    "ĀTRAIS IZAICINĀJUMS: Nosauc 5 lietas, ko var atrast ledusskapī, bet tās nedrīkst būt dzērieni. Ja neizdodas 10 sekundēs, dzer.",
-    "ĀTRAIS IZAICINĀJUMS: Mēģini ar elkoni aizsniegt savu degunu. Protams, ka neizdosies. Dzer par mēģinājumu.",
-    "ĀTRAIS IZAICINĀJUMS: Nosauc 5 slavenus cilvēkus, kuru vārds sākas ar 'J'. Tev ir 15 sekundes.",
-    "ĀTRAIS IZAICINĀJUMS: Neizmantojot rokas, paņem malku no savas glāzes.",
-    "ĀTRAIS IZAICINĀJUMS: Izveido torni no 3 priekšmetiem, kas tev ir pa rokai. Tam jānostāv 5 sekundes.",
-    "ĀTRAIS IZAICINĀJUMS: Pasaki mēles mežģi: 'Šis žagaru saišķis ir mans žagaru saišķis'. Trīs reizes. Ja kļūdies, dzer.",
-
-    // === Dzeršanas Komandas (Drinking Commands) ===
-    "VĪRIEŠU KĀRTA: Visi vīrieši dzer.",
-    "SIEVIEŠU KĀRTA: Visas sievietes dzer.",
-    "ĪSĀKAIS MATU GARUMS: Spēlētājs ar īsākajiem matiem dzer.",
-    "GARĀKAIS VĀRDS: Spēlētājs ar garāko vārdu dzer.",
-    "TELEFONS: Visi, kam telefonam baterija ir zem 50%, dzer.",
-    "BRILLES: Visi, kam ir brilles, dzer.",
-    "MĀJASDZĪVNIEKI: Visi, kam mājās ir kaķis vai suns, dzer.",
-    "KREKLA KRĀSA: Visi, kam mugurā ir kaut kas zils, dzer.",
-    "PĀRI UN VIENTUĻIE: Visi, kas ir attiecībās, dzer. Visi, kas ir brīvi, arī dzer. Šodien dzer visi!",
-    "DZIMŠANAS DIENA: Dzer, ja tava dzimšanas diena ir nepāra datumā.",
-    "HOROSKOPS: Visi, kas ir ūdens zīmes horoskopā (Vēzis, Skorpions, Zivis), dzer.",
-    "JAUNĀKAIS UN VECĀKAIS: Jaunākais un vecākais spēlētājs iedzer.",
-    "TUMŠI MATI: Visi, kam ir tumši mati (brūni, melni), dzer.",
-    "GREDZENS: Visi, kam pirkstā ir gredzens, dzer.",
-    "SVEŠZEMES: Visi, kas šogad ir bijuši ārzemēs, dzer.",
-    "Kaimiņi: Spēlētāji tev pa labi un pa kreisi dzer.",
-    "ALFABĒTS: Dzer, ja tavs vārds sākas ar burtu no A līdz M.",
-    "MĒNESIS: Dzer, ja esi dzimis rudenī (septembris, oktobris, novembris).",
-    "APAVI: Visi, kam kājās ir kedas vai sporta apavi, dzer.",
-    "ANDROID vs APPLE: Visi Android lietotāji dzer. Visi Apple lietotāji dzer. Mēs esam par vienlīdzību.",
-
-    // === Sociālie Uzdevumi (Social Tasks) ===
-    "SOCIĀLIE TĪKLI: Ieraksti savā Instagram story 'Es mīlu pelmeņus'. Vai arī dzer.",
-    "ZVANSpēle: Zvani pirmajam kontaktam savā telefonu grāmatā un nodziedi viņam 'Daudz baltu dieniņu'. Vai arī dzer.",
-    "ĪSZIŅA: Aizsūti īsziņu savam bijušajam partnerim ar tekstu 'Piedod'. Vai arī dzer pamatīgu malku.",
-    "FOTO IZAICINĀJUMS: Uztaisi smieklīgāko selfiju un aizsūti to šīs spēles čatā. Pārējie nobalso par labāko. Uzvarētājs liek kādam iedzert.",
-    "GOOGLE VĒSTURE: Parādi visiem pēdējās 5 lietas, ko meklēji Google. Vai arī dzer.",
-    "TELEFONA MAIŅA: Samainies telefoniem ar spēlētāju pa kreisi uz 2 minūtēm. Viņš drīkst publicēt vienu story tavā vārdā.",
-    "EMOJI ZIŅA: Aizsūti savai mammai īsziņu, kas sastāv tikai no 5 dažādiem emoji. Parādi visiem. Vai arī dzer.",
-    "BALSS ZIŅA: Ieraksti balss ziņu un aizsūti kādam, kurā tu čukstus saki 'Es zinu, ko tu darīji pagājušajā vasarā'. Vai arī dzer.",
-    "KONTAKTA VĀRDS: Atrodi smieklīgāko kontakta vārdu savā telefonā un parādi visiem. Ja pārējiem šķiet, ka nav smieklīgi, dzer.",
-    "PĒDĒJĀ BILDES: Parādi pēdējo bildi, ko uzņēmi ar savu telefonu. Izskaidro kontekstu.",
-    "STATUSA MAIŅA: Nomaini savu WhatsApp statusu uz 'Meklēju otro pusīti'. Tam jāpaliek vismaz stundu. Vai arī dzer.",
-    "KOMENTĀRS: Atrodi 10. cilvēku savā Instagram sekotāju sarakstā un ieraksti komentāru 'Karalis/-iene!' pie viņa pēdējās bildes.",
-    "PLAYLIST: Parādi visiem savu Spotify 'On Repeat' playlisti. Grupa izvēlas vienu dziesmu, kas visiem jāpaklausās.",
-    
-    // === Mini-Spēles (Mini-Games) ===
-    "STĀSTS: Sāc stāstu ar vārdu 'Kādā'. Katrs spēlētājs pa apli pievieno vienu vārdu. Pirmais, kurš saminstinās vai pasaka ko neloģisku, dzer.",
-    "ATSKAŅAS: Pasaki vārdu. Nākamais pa apli saka vārdu, kas ar to atskaņojas. Kurš pirmais nevar izdomāt, dzer.",
-    "KATEGORIJAS: Izvēlies kategoriju (piem., 'alkoholiskie dzērieni'). Katrs sauc vienu lietu no šīs kategorijas. Kurš pirmais nevar nosaukt, dzer.",
-    "MĒMAIS ŠOVS: Attēlo filmas nosaukumu bez vārdiem. Pirmais, kurš uzmin, var likt kādam iedzert.",
-    "AKMENS, ŠĶĒRES, PAPĪRĪTS: Spēlē pret cilvēku sev pa labi. Zaudētājs dzer.",
-    "ACU KONTAKTS: Skaties acīs cilvēkam sev pretī. Pirmais, kurš novēršas, smejas vai mirkšķina, dzer.",
-    "KARSTS KARTUPELIS: Iedomājieties karstu kartupeli. Tu to 'padod' nākamajam, ātri nosaucot kādu pilsētu. Nākamais dara to pašu. Kurš nevar ātri nosaukt, 'apdedzinās' un dzer.",
-    "ES EJU UZ VEIKALU: Sāc ar 'Es eju uz veikalu un pērku... (piem., ābolus)'. Nākamais atkārto un pieliek savu preci. Tā turpinās, līdz kāds aizmirst kādu no precēm. Aizmārša dzer.",
-    "PANDORA'S BOX: Visi uzraksta uz lapiņas vienu 'Never Have I Ever' jautājumu. Tu izvelc vienu un atbildi uz to.",
-
-    // === Kreatīvie Uzdevumi (Creative Tasks) ===
-    "ZĪMĒJUMS: Uzzīmē savu kaimiņu no atmiņas 30 sekundēs. Parādi visiem. Ja pārējie saka, ka zīmējums ir slikts, dzer.",
-    "REKLĀMA: Izdomā reklāmas saukli glāzei, kas tev priekšā. Ja sauklis ir labs, pārējie dzer. Ja slikts - tu dzer.",
-    "DZEJOLIS: Sacer četrrindi par spēlētāju, kas sēž tev pretī.",
-    "SLAVENĪBA: Pasaki, kurai slavenībai tu līdzinies visvairāk un pamato. Ja grupa nepiekrīt, dzer.",
-    "SUPERSPĒJA: Izdomā sev superspēju, bet tai jābūt ļoti bezjēdzīgai (piem., spēja uzsildīt tēju ar domu spēku).",
-    "IMPROVIZĀCIJA: Izvēlies jebkurus divus priekšmetus, kas tev ir pa rokai. Izstāsti, kā tos varētu izmantot, lai izglābtos no vientuļas salas.",
-    "LOGOTIPS: Pārveido kādas slavenas firmas logo, lai tas attēlotu tevi. Uzzīmē to.",
-    "TALANTS: Parādi kādu savu slēpto talantu. Ja tev tāda nav vai atsakies, dzer.",
-    "DZIESMA: Izdomā jaunu nosaukumu savai mīļākajai dziesmai.",
-    
-    // === Atmiņas (Memories) ===
-    "ATMIŅA: Pastāsti par savu pirmo simpātiju.",
-    "ATMIŅA: Pastāsti par smieklīgāko lietu, kas ar tevi atgadījusies skolā.",
-    "ATMIŅA: Pastāsti par savu labāko dzimšanas dienas dāvanu.",
-    "ATMIŅA: Pastāsti par savu mīļāko bērnības atmiņu.",
-    "ATMIŅA: Pastāsti par pēdējo reizi, kad pamatīgi smējies.",
-    "ATMIŅA: Pastāsti par savu pirmo darba dienu jebkad.",
-    "ATMIŅA: Pastāsti par neveiklāko randiņu, kāds tev bijis.",
-    
-    // === Citi (Other) ===
-    "DROŠĪBA: Tu esi pasargāts. Nākamajā reizē, kad tev būtu jādzer, tu vari likt to darīt kādam citam.",
-    "BUMBA: Tu vari sadalīt 10 malkus starp pārējiem spēlētājiem pēc saviem ieskatiem.",
-    "TOSTS: Saki tostu par godu visabsurdākajai lietai, ko vari iedomāties. Visi dzer.",
-    "PERSONAS MAIŅA: Samainies vietām ar kādu citu spēlētāju.",
-    "JOKS: Pastāsti anekdoti. Ja neviens nesmejas, dzer dubultā.",
-    "DĀVANA: Iedod vienu malku spēlētājam, kuram šodien ir vislabākais garastāvoklis.",
-    "APMAIŅA: Liec diviem citiem spēlētājiem samainīties ar kādu apģērba gabalu (piem., cepuri, džemperi).",
-    "SPIEGS: Izvēlies vienu spēlētāju. Tev slepeni jāpanāk, lai viņš pasaka vārdu 'nē'. Ja tev tas izdodas līdz tavai nākamajai kārtai, viņš dzer. Ja nē, dzer tu.",
-    "ŪDENSKritums: Izvēlies kādu, kas sāks dzert. Visi pēc kārtas sāk dzert un nedrīkst apstāties, kamēr nav apstājies iepriekšējais."
-];
+// Ielasām datus no atsevišķiem failiem.
+const neverHaveIEverQuestions = require('./data/neverHaveIEver.js');
+const latviaTriviaQuestions = require('./data/latviaTrivia.js');
+const izaicinajumiUnUzdevumi = require('./data/izaicinajumi.js');
+const spellingBeeWords = require('./data/spellingBee.js');
 
 function createMasterGameArray() {
     const masterArray = [];
-    neverHaveIEverQuestions.forEach(q => masterArray.push({ type: 'never', data: { question: q } }));
-    latviaTriviaQuestions.forEach(q => masterArray.push({ type: 'latvia', data: q }));
-    // UPDATED: Using the new Latvian task list
-    izaicinajumiUnUzdevumi.forEach(task => masterArray.push({ type: 'task', data: { text: task } }));
-    spellingBeeWords.medium.forEach(word => masterArray.push({ type: 'spelling', data: { word: word, difficulty: 'medium' } }));
-    spellingBeeWords.hard.forEach(word => masterArray.push({ type: 'spelling', data: { word: word, difficulty: 'hard' } }));
+    if (neverHaveIEverQuestions) masterArray.push(...neverHaveIEverQuestions.map(q => ({ type: 'never', data: { question: q } })));
+    if (latviaTriviaQuestions) masterArray.push(...latviaTriviaQuestions.map(q => ({ type: 'latvia', data: q })));
+    if (izaicinajumiUnUzdevumi) masterArray.push(...izaicinajumiUnUzdevumi.map(task => ({ type: 'task', data: { text: task } })));
+    if (spellingBeeWords) {
+        const allWords = [...(spellingBeeWords.easy || []), ...(spellingBeeWords.medium || []), ...(spellingBeeWords.hard || [])];
+        allWords.forEach(word => masterArray.push({ type: 'spelling', data: { word: word } }));
+    }
     return masterArray;
 }
-
 const masterGameArray = createMasterGameArray();
 const rooms = {};
 
 app.use(express.static('public'));
 
-
 io.on('connection', (socket) => {
     socket.on('joinRoom', ({ roomCode, playerName }) => {
+        if (!roomCode || !playerName) return;
         socket.join(roomCode);
-        if (!rooms[roomCode]) { rooms[roomCode] = { players: [], currentGame: null, currentPlayerIndex: 0 }; }
+        let isHost = false;
+        if (!rooms[roomCode]) {
+            isHost = true;
+            rooms[roomCode] = { 
+                players: [], hostId: socket.id, gameStarted: false,
+                currentPlayerIndex: 0, currentTurnData: null, scores: {}
+            };
+        }
+        const room = rooms[roomCode];
+        if (room.players.some(p => p.name === playerName)) {
+            socket.emit('joinError', 'Spēlētājs ar šādu vārdu jau ir šajā istabā.');
+            socket.leave(roomCode);
+            return;
+        }
         const playerInfo = { id: socket.id, name: playerName };
-        rooms[roomCode].players.push(playerInfo);
-        const playerNames = rooms[roomCode].players.map(p => p.name);
-        io.to(roomCode).emit('updatePlayerList', playerNames);
+        room.players.push(playerInfo);
+        room.scores[playerName] = 0;
+        const hostPlayer = room.players.find(p => p.id === room.hostId);
+        io.to(roomCode).emit('updateLobby', {
+            players: room.players.map(p => p.name), scores: room.scores,
+            hostName: hostPlayer ? hostPlayer.name : null, gameStarted: room.gameStarted
+        });
+        io.to(roomCode).emit('newNotification', `${playerName} pievienojās istabai ${roomCode}!`);
+        socket.emit('assignHost', isHost);
     });
-    socket.on('startChaosGame', ({ roomCode }) => {
-        if (rooms[roomCode]) {
-            rooms[roomCode].currentGame = 'chaos';
-            rooms[roomCode].currentPlayerIndex = 0;
-            const activePlayer = rooms[roomCode].players[0];
+
+    const isHostAction = (roomCode, socketId) => rooms[roomCode] && rooms[roomCode].hostId === socketId;
+
+    socket.on('startGame', ({ roomCode }) => {
+        if (isHostAction(roomCode, socket.id) && rooms[roomCode] && !rooms[roomCode].gameStarted) {
+            const room = rooms[roomCode];
+            room.gameStarted = true;
+            room.currentPlayerIndex = 0;
+            const activePlayer = room.players[0];
             const turnData = masterGameArray[Math.floor(Math.random() * masterGameArray.length)];
-            io.to(roomCode).emit('newTurn', { turnData, activePlayerName: activePlayer.name });
+            room.currentTurnData = turnData;
+            if (activePlayer) io.to(roomCode).emit('newTurn', { turnData, activePlayerName: activePlayer.name });
         }
     });
+
     socket.on('nextTurn', ({ roomCode }) => {
-        const room = rooms[roomCode];
-        if (room && room.currentGame === 'chaos') {
+        if (isHostAction(roomCode, socket.id)) {
+            const room = rooms[roomCode];
+            if (!room.players || room.players.length === 0) return;
             room.currentPlayerIndex = (room.currentPlayerIndex + 1) % room.players.length;
             const activePlayer = room.players[room.currentPlayerIndex];
             const turnData = masterGameArray[Math.floor(Math.random() * masterGameArray.length)];
-            io.to(roomCode).emit('newTurn', { turnData, activePlayerName: activePlayer.name });
+            room.currentTurnData = turnData;
+            if (activePlayer) io.to(roomCode).emit('newTurn', { turnData, activePlayerName: activePlayer.name });
         }
     });
-    socket.on('disconnecting', () => { /* ... disconnect logic ... */ });
+    
+    socket.on('playerTyping', ({ roomCode, text }) => {
+        socket.to(roomCode).emit('typingUpdate', { text });
+    });
+
+    socket.on('submitSpelling', ({ roomCode, submission }) => {
+        const room = rooms[roomCode];
+        const activePlayerName = room.players[room.currentPlayerIndex]?.name;
+        if (room && room.currentTurnData?.type === 'spelling' && activePlayerName) {
+            const correctWord = room.currentTurnData.data.word;
+            const isCorrect = submission.trim().toLowerCase() === correctWord.toLowerCase();
+            if (!isCorrect) {
+                if(room.scores[activePlayerName] !== undefined) room.scores[activePlayerName]++;
+            }
+            io.to(roomCode).emit('spellingResult', { submission, isCorrect, correctWord });
+            io.to(roomCode).emit('updateScores', room.scores);
+        }
+    });
+
+    socket.on('submitLatviaAnswer', ({ roomCode, answer }) => {
+        const room = rooms[roomCode];
+        const activePlayerName = room.players[room.currentPlayerIndex]?.name;
+        if (room && room.currentTurnData?.type === 'latvia' && activePlayerName) {
+            const correctAnswer = room.currentTurnData.data.answer;
+            if (answer !== correctAnswer) {
+                if(room.scores[activePlayerName] !== undefined) room.scores[activePlayerName]++;
+            }
+            io.to(roomCode).emit('latviaResult', { chosenAnswer: answer, correctAnswer });
+            io.to(roomCode).emit('updateScores', room.scores);
+        }
+    });
+    
+    socket.on('disconnecting', () => {
+        const roomCode = Array.from(socket.rooms).find(room => room !== socket.id && rooms[room]);
+        if (roomCode) {
+            const room = rooms[roomCode];
+            const playerLeaving = room.players.find(p => p.id === socket.id);
+            if (!playerLeaving) return;
+            room.players = room.players.filter(p => p.id !== socket.id);
+            delete room.scores[playerLeaving.name];
+            io.to(roomCode).emit('newNotification', `${playerLeaving.name} pameta spēli.`);
+            if (room.players.length > 0) {
+                if (socket.id === room.hostId) {
+                    room.hostId = room.players[0].id;
+                    const newHostName = room.players[0].name;
+                    io.to(roomCode).emit('newNotification', `${newHostName} tagad ir jaunais spēles vadītājs!`);
+                    io.to(room.hostId).emit('assignHost', true);
+                }
+                const hostPlayer = room.players.find(p => p.id === room.hostId);
+                io.to(roomCode).emit('updateLobby', { 
+                    players: room.players.map(p => p.name), 
+                    scores: room.scores, 
+                    hostName: hostPlayer ? hostPlayer.name : 'N/A',
+                    gameStarted: room.gameStarted
+                });
+            } else {
+                delete rooms[roomCode];
+            }
+        }
+    });
 });
 
-server.listen(PORT, () => console.log(`🚀 Server is running on http://localhost:${PORT}`));
+server.listen(PORT, () => console.log(`🚀 Serveris ir palaists! Atver http://localhost:${PORT}`));
