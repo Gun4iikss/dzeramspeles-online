@@ -1,0 +1,144 @@
+/* File: public/style.css (NEW "BREATHING" CARD ANIMATION) */
+
+/* === Saknes Mainīgie === */
+:root {
+    --font-primary: 'Montserrat', sans-serif;
+    --font-secondary: 'Roboto', sans-serif;
+    --color-dark: #121212;
+    --color-mid: #1E1E1E;
+    --color-light: #2d2d2d;
+    --color-text: #EAEAEA;
+    --color-primary: #BB86FC;
+    --color-secondary: #03DAC6;
+    --color-success: #4CAF50;
+    --color-danger: #F44336;
+    --color-warning: #ff9800;
+}
+
+/* === Galvenais Izkārtojums === */
+body {
+    font-family: var(--font-secondary);
+    margin: 0;
+    color: var(--color-text);
+    background: linear-gradient(45deg, #2c3e50, #1d2b3a, #2c3e50, #4b7f9e);
+    background-size: 400% 400%;
+    animation: animated-gradient 25s ease infinite;
+    overflow-x: hidden;
+}
+
+@keyframes animated-gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+main#main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: margin-right 0.4s ease;
+}
+
+body.sidebar-active main#main-content {
+    margin-right: 280px;
+}
+
+/* === Spēlētāju Sānjosla === */
+.sidebar {
+    position: fixed; top: 0; right: 0; width: 280px; height: 100%;
+    background: var(--color-dark); border-left: 1px solid #444;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5); padding: 20px;
+    box-sizing: border-box; transform: translateX(100%);
+    transition: transform 0.4s ease-out; display: flex; flex-direction: column; z-index: 200;
+}
+.sidebar.visible { transform: translateX(0); }
+.sidebar h3 { font-family: var(--font-primary); text-align: center; color: var(--color-primary); margin-top: 0; border-bottom: 1px solid #444; padding-bottom: 15px; }
+#playerList { list-style: none; padding: 0; margin: 0; overflow-y: auto; }
+#playerList li { background-color: var(--color-light); padding: 10px 15px; border-radius: 5px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 1.1em; }
+.player-name { font-weight: 700; }
+.score-counter { font-weight: bold; color: var(--color-warning); font-size: 1.2em; }
+.host-icon { color: #FFD700; margin-left: auto; padding-left: 10px; }
+
+/* === Galvenais Konteiners === */
+.container {
+    background-color: rgba(30, 30, 30, 0.8);
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+h1 { font-family: var(--font-primary); font-weight: 700; font-size: 2.5em; color: #fff; }
+.subtitle { margin-top: -15px; margin-bottom: 30px; color: #bdc3c7; }
+input { width: 100%; padding: 12px; margin: 8px 0; box-sizing: border-box; border-radius: 5px; border: 1px solid #555; background-color: #333; color: #f1f1f1; font-size: 1em; }
+.lobby-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* === Pogas un to Animācijas === */
+button { font-family: var(--font-primary); font-weight: 700; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; text-transform: uppercase; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); background-size: 200% auto; }
+button:disabled { background-color: #555 !important; cursor: not-allowed; transform: none !important; box-shadow: none !important; animation: none !important; background-image: none !important; }
+button:not(:disabled):hover { transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); background-position: right center; }
+button:not(:disabled):active { transform: translateY(1px); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
+#joinRoomBtn { background-image: linear-gradient(to right, #00d2ff 0%, #3a7bd5 51%, #00d2ff 100%); color: white; }
+#createRoomBtn { background-image: linear-gradient(to right, #f857a6 0%, #ff5858 51%, #f857a6 100%); color: white; }
+.chaos-btn, .btn-next-question { background-image: linear-gradient(to right, #f0932b 0%, #d63031 51%, #f0932b 100%); color: white; padding: 20px; font-size: 1.5em; width: 100%; animation: pulse-orange 2s infinite; }
+.btn-next-question { padding: 15px; font-size: 1.1em; }
+@keyframes pulse-orange { 0% { box-shadow: 0 0 0 0 rgba(240, 147, 43, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(240, 147, 43, 0); } 100% { box-shadow: 0 0 0 0 rgba(240, 147, 43, 0); } }
+.option-btn { background-image: linear-gradient(to right, #485563 0%, #29323c 51%, #485563 100%); color: white; padding: 15px; }
+.option-btn:hover { color: #fff; }
+.option-btn.correct { background-image: linear-gradient(to right, #1D976C 0%, #93F9B9 51%, #1D976C 100%) !important; color:#000; transform:scale(1.05); }
+.option-btn.incorrect { background-image: linear-gradient(to right, #D31027 0%, #EA384D 51%, #D31027 100%) !important; color:#fff; }
+
+/* === Paziņojumi === */
+#notification-container { position: fixed; top: 20px; left: 20px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+.notification { background-color: rgba(20, 20, 20, 0.85); color: #fff; padding: 12px 20px; border-radius: 5px; border-left: 5px solid var(--color-primary); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); opacity: 1; animation: slideIn .4s ease-out forwards; }
+@keyframes slideIn { from { transform: translateX(-120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.notification.fade-out { animation: fadeOut .5s ease-out forwards; }
+@keyframes fadeOut { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(-120%); } }
+
+/* === Spēles Dēļi un Kartītes === */
+.card {
+    background: #fff;
+    color: #000;
+    border-radius: 15px;
+    padding: 30px;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    /* JAUNUMS: Pievienojam "elpojoša" mirdzuma animāciju */
+    animation: breathing-glow 3s ease-in-out infinite alternate;
+}
+
+/* JAUNUMS: Animācija priekš kartītes mirdzuma */
+@keyframes breathing-glow {
+    from {
+        /* Sākuma stāvoklis: parasta ēna */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    to {
+        /* Beigu stāvoklis: parasta ēna + smalks, pelēcīgs mirdzums */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 25px 5px rgba(235, 235, 255, 0.3);
+    }
+}
+
+.game-board { animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; }
+@keyframes popIn { 0% { transform: scale(0.8); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+.game-title { font-family: var(--font-primary); font-size: 1.5em; font-weight: 700; color: var(--color-primary); margin-bottom: 20px; }
+.question-main { font-family: var(--font-primary); font-size: 1.8em; font-weight: 700; margin-top: 10px; }
+#turnIndicator { background: rgba(0, 0, 0, 0.3); padding: 8px; border-radius: 5px; margin-top: 10px; font-weight: 700; }
+#activePlayerName { color: var(--color-warning); font-style: italic; }
+
+/* === Tēmu Foni === */
+body.theme-never { background: linear-gradient(45deg, #8E2DE2, #4A00E0, #8E2DE2, #3a0092); background-size: 400% 400%; animation: animated-gradient 25s ease infinite; }
+body.theme-latvia { background: linear-gradient(45deg, #A20000, #610000, #A20000, #d32f2f); background-size: 400% 400%; animation: animated-gradient 25s ease infinite; }
+body.theme-task { background: linear-gradient(45deg, #f0932b, #d63031, #f0932b, #ff7e5f); background-size: 400% 400%; animation: animated-gradient 25s ease infinite; }
+body.theme-spelling { background: linear-gradient(45deg, #004e92, #000428, #004e92, #1cb5e0); background-size: 400% 400%; animation: animated-gradient 25s ease infinite; }
